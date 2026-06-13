@@ -1,0 +1,24 @@
+=== Markov-drift simulation results (§ 6.1) ===
+k = 8, K = k(k-1) = 56, tau_pred = 1
+Stationary eta_L late-time plateau: 6.055e-05
+
+Drift, no reset (lambda=1e-3, tau_w=inf, T=1e5, 60 runs):
+  fit eta_L*t vs ln(lam t) on t in [2000,50000]:
+    slope = -0.057
+    R^2 = 0.802
+    theory K/(2R) = 28.0
+    K_eff (R=1) = -0.11
+  nu_inf (late-time t>60k): 0.999 +- 0.001
+  nu at eta_L peak: 0.339
+  nu at eta_L halflife (empirical nu_c proxy): 0.445
+
+Tau_w sweep (lambda=1e-3, T=5e4, 40 runs):
+  tau_w=    50: <eta_L>_late = 8.494e-06 +- 1.346e-07
+  tau_w=   100: <eta_L>_late = 1.154e-05 +- 1.204e-07
+  tau_w=   200: <eta_L>_late = 1.300e-05 +- 1.665e-07
+  tau_w=   500: <eta_L>_late = 1.283e-05 +- 1.521e-07
+  tau_w=  1000: <eta_L>_late = 1.077e-05 +- 2.534e-07
+  tau_w=  2000: <eta_L>_late = 6.963e-06 +- 2.111e-07
+  tau_w=  5000: <eta_L>_late = 2.731e-06 +- 1.829e-07
+  tau_w= 10000: <eta_L>_late = 1.269e-06 +- 1.211e-07
+  optimal tau_w in grid: 200

@@ -1,0 +1,271 @@
+{
+  "experiment": "ML surrogate Permuted MNIST (article #2 § 8.4), nu^op_true",
+  "dataset_source": "sklearn.load_digits (8x8 рукописные цифры)",
+  "X_shape": [
+    1797,
+    64
+  ],
+  "n_classes": 10,
+  "eta": 0.1,
+  "n_hidden": 32,
+  "n_steps": 120000,
+  "batch_size": 32,
+  "abl_threshold": 0.05,
+  "measure_every": 2000,
+  "abl_sample": 600,
+  "n_past": 3,
+  "n_runs": 4,
+  "seed": 20260524,
+  "acc_gate": 0.8,
+  "rho_grid": [
+    0.003,
+    0.001,
+    0.0005,
+    0.0003,
+    0.0001
+  ],
+  "scan": [
+    {
+      "rho_p": 0.003,
+      "c_theory": 33.333333333333336,
+      "dwell": 333.3333333333333,
+      "accuracy": 0.7768055555555556,
+      "accuracy_std": 0.012167839872405311,
+      "nu_true": 0.0067708333333333336,
+      "nu_true_std": 0.0052343102193337975,
+      "dead_frac": 0.00026041666666666666,
+      "useful_frac": 0.99296875,
+      "n_switches_mean": 371.5,
+      "learned": false,
+      "per_run": [
+        {
+          "nu_true": 0.008333333333333333,
+          "accuracy": 0.7829444444444446,
+          "dead_frac": 0.0010416666666666667,
+          "useful_frac": 0.990625,
+          "n_switches": 349,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.014583333333333334,
+          "accuracy": 0.7670000000000001,
+          "dead_frac": 0.0,
+          "useful_frac": 0.9854166666666667,
+          "n_switches": 365,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.0010416666666666667,
+          "accuracy": 0.7636111111111109,
+          "dead_frac": 0.0,
+          "useful_frac": 0.9989583333333333,
+          "n_switches": 373,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.003125,
+          "accuracy": 0.7936666666666669,
+          "dead_frac": 0.0,
+          "useful_frac": 0.996875,
+          "n_switches": 399,
+          "n_nu_measurements": 30
+        }
+      ]
+    },
+    {
+      "rho_p": 0.001,
+      "c_theory": 100.0,
+      "dwell": 1000.0,
+      "accuracy": 0.8799722222222222,
+      "accuracy_std": 0.02294694968835723,
+      "nu_true": 0.025,
+      "nu_true_std": 0.00890000390137243,
+      "dead_frac": 0.003125,
+      "useful_frac": 0.9718749999999999,
+      "n_switches_mean": 118.5,
+      "learned": true,
+      "per_run": [
+        {
+          "nu_true": 0.013541666666666667,
+          "accuracy": 0.8766666666666665,
+          "dead_frac": 0.0010416666666666667,
+          "useful_frac": 0.9854166666666667,
+          "n_switches": 120,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.036458333333333336,
+          "accuracy": 0.8440555555555556,
+          "dead_frac": 0.003125,
+          "useful_frac": 0.9604166666666667,
+          "n_switches": 120,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.030208333333333334,
+          "accuracy": 0.9038333333333332,
+          "dead_frac": 0.00625,
+          "useful_frac": 0.9635416666666666,
+          "n_switches": 118,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.019791666666666666,
+          "accuracy": 0.8953333333333333,
+          "dead_frac": 0.0020833333333333333,
+          "useful_frac": 0.978125,
+          "n_switches": 116,
+          "n_nu_measurements": 30
+        }
+      ]
+    },
+    {
+      "rho_p": 0.0005,
+      "c_theory": 200.0,
+      "dwell": 2000.0,
+      "accuracy": 0.912,
+      "accuracy_std": 0.0037681658766665674,
+      "nu_true": 0.03463541666666667,
+      "nu_true_std": 0.011678170481655552,
+      "dead_frac": 0.00625,
+      "useful_frac": 0.9591145833333333,
+      "n_switches_mean": 64.0,
+      "learned": true,
+      "per_run": [
+        {
+          "nu_true": 0.04583333333333333,
+          "accuracy": 0.9080555555555555,
+          "dead_frac": 0.007291666666666667,
+          "useful_frac": 0.946875,
+          "n_switches": 71,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.01875,
+          "accuracy": 0.9097222222222222,
+          "dead_frac": 0.007291666666666667,
+          "useful_frac": 0.9739583333333334,
+          "n_switches": 64,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.04583333333333333,
+          "accuracy": 0.9122222222222224,
+          "dead_frac": 0.0020833333333333333,
+          "useful_frac": 0.9520833333333333,
+          "n_switches": 57,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.028125,
+          "accuracy": 0.918,
+          "dead_frac": 0.008333333333333333,
+          "useful_frac": 0.9635416666666666,
+          "n_switches": 64,
+          "n_nu_measurements": 30
+        }
+      ]
+    },
+    {
+      "rho_p": 0.0003,
+      "c_theory": 333.33333333333337,
+      "dwell": 3333.3333333333335,
+      "accuracy": 0.9554027777777778,
+      "accuracy_std": 0.036292628723906956,
+      "nu_true": 0.14088541666666668,
+      "nu_true_std": 0.08813440343348554,
+      "dead_frac": 0.02578125,
+      "useful_frac": 0.8333333333333333,
+      "n_switches_mean": 32.25,
+      "learned": true,
+      "per_run": [
+        {
+          "nu_true": 0.08645833333333333,
+          "accuracy": 0.8967777777777779,
+          "dead_frac": 0.0125,
+          "useful_frac": 0.9010416666666666,
+          "n_switches": 37,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.12916666666666668,
+          "accuracy": 0.9552777777777778,
+          "dead_frac": 0.014583333333333334,
+          "useful_frac": 0.85625,
+          "n_switches": 38,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.2875,
+          "accuracy": 0.9920555555555557,
+          "dead_frac": 0.059375,
+          "useful_frac": 0.653125,
+          "n_switches": 21,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.06041666666666667,
+          "accuracy": 0.9774999999999999,
+          "dead_frac": 0.016666666666666666,
+          "useful_frac": 0.9229166666666667,
+          "n_switches": 33,
+          "n_nu_measurements": 30
+        }
+      ]
+    },
+    {
+      "rho_p": 0.0001,
+      "c_theory": 1000.0,
+      "dwell": 10000.0,
+      "accuracy": 0.989,
+      "accuracy_std": 0.004246094792589314,
+      "nu_true": 0.40182291666666664,
+      "nu_true_std": 0.09274161095166356,
+      "dead_frac": 0.08828125,
+      "useful_frac": 0.5098958333333333,
+      "n_switches_mean": 13.75,
+      "learned": true,
+      "per_run": [
+        {
+          "nu_true": 0.26458333333333334,
+          "accuracy": 0.9871111111111113,
+          "dead_frac": 0.042708333333333334,
+          "useful_frac": 0.6927083333333334,
+          "n_switches": 17,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.43854166666666666,
+          "accuracy": 0.9889999999999998,
+          "dead_frac": 0.09479166666666666,
+          "useful_frac": 0.4666666666666667,
+          "n_switches": 13,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.384375,
+          "accuracy": 0.9841666666666666,
+          "dead_frac": 0.10520833333333333,
+          "useful_frac": 0.5104166666666666,
+          "n_switches": 14,
+          "n_nu_measurements": 30
+        },
+        {
+          "nu_true": 0.5197916666666667,
+          "accuracy": 0.9957222222222222,
+          "dead_frac": 0.11041666666666666,
+          "useful_frac": 0.3697916666666667,
+          "n_switches": 11,
+          "n_nu_measurements": 30
+        }
+      ]
+    }
+  ],
+  "prediction_check": {
+    "acc_gate": 0.8,
+    "n_learned_points": 4,
+    "spearman_rho_nu_learned": -1.0,
+    "spearman_c_nu_learned": 1.0,
+    "spearman_acc_nu_learned": 1.0
+  }
+}

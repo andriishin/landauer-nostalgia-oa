@@ -1,0 +1,56 @@
+This repository accompanies the article
+"The Non-Stationary Landauer Efficiency: Memory Growth, Informational
+Nostalgia, and the Thermodynamics of Learning Systems".
+
+==============================================================================
+TEXT, FIGURES, AND DATA
+==============================================================================
+
+The manuscript (paper/main.md, paper/main.ru.md), supplementary
+material (paper/supplementary.md, paper/supplementary.ru.md), the
+bibliography (paper/refs.bib), the figures (paper/figs/), and the
+prose, READMEs, and result/output files under simulations/
+(results_summary.{txt,json}, run.log) are licensed under the
+
+    Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+SPDX-License-Identifier: CC-BY-4.0
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+You are free to share and adapt this material for any purpose, even
+commercially, provided you give appropriate credit, provide a link to
+the license, and indicate if changes were made.
+
+==============================================================================
+SOURCE CODE
+==============================================================================
+
+The Python source code under simulations/ (the *.py files) is
+licensed separately under the MIT License; see simulations/LICENSE.
+
+SPDX-License-Identifier: MIT
+
+==============================================================================
+THIRD-PARTY MATERIAL (NOT COVERED BY THE LICENSES ABOVE)
+==============================================================================
+
+paper/sn-jnl.cls and paper/sn-*.bst are the Springer Nature LaTeX
+template and bibliography-style files. These are the property of
+Springer Nature and are redistributed under Springer Nature's standard
+author terms for use with their journal templates. They are NOT covered
+by the CC-BY-4.0 or MIT licenses above; for any reuse outside the scope
+of preparing a Springer Nature submission, refer to Springer Nature's
+terms or download the template directly from
+https://www.springernature.com/gp/authors/campaigns/latex-author-support.
+
+The .tex files (paper/main.tex, paper/main.ru.tex,
+paper/supplementary.tex, paper/supplementary.ru.tex) are generated from
+the corresponding .md sources and reuse Springer Nature template macros;
+the prose and equations within them remain under CC-BY-4.0 as part of
+the manuscript. The compiled PDFs are the rendered manuscript under
+CC-BY-4.0.
+
+==============================================================================
+
+Copyright (c) 2026 Alexander Andriishin.

@@ -1,0 +1,37 @@
+=== iter-006 Step 1: OU + I_infinity (BNT redundancy) ===
+k = 8, K = k(k-1) = 56
+lambda = 0.001, sigma = 0.01, T = 10000, n_runs = 30
+OU stat. variance sigma^2/(2 lambda) = 5.000e-02
+Transient bound 1/sigma^2 = 1.00e+04
+Fit window [1000, 10000]  -- within transient bound: True
+
+--- Metric B-strict (log-only): L_excess(t) vs ln(lambda t) ---
+  slope     = 87.757
+  intercept = 16.010
+  R^2       = 0.939
+  theory K/2 = 28.0
+  ratio empirical/theory = 3.134
+
+--- Joint fit: L_excess(t) = A*t + B*ln(lambda t) + C ---
+  A (linear drift) = 1.85414e-02
+  B (log coef)     = 9.505
+  C                = 35.626
+  R^2              = 0.9998
+  theory B = K/2   = 28.0
+  ratio B/(K/2)   = 0.339
+
+--- Metric B-eta (operational): eta_L^inf(t)*t vs ln(lambda t) ---
+  slope     = -8.724
+  R^2       = 0.976
+  theory K/(2R) = 28.0
+  ratio empirical/theory = -0.312
+
+--- Control: one-step eta*t (iter-005 metric) ---
+  slope     = 0.000
+  R^2       = 0.509
+
+Late-time diagnostics:
+  nu = 0.972 +- 0.013
+  <I_opt_1step> = 1.646e-02
+  L_excess(10000) = 243.285
+  G_obs(10000)    = -59.587

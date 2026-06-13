@@ -1,0 +1,25 @@
+=== OU-drift simulation results (§ 6.2) ===
+k = 8, K = k(k-1) = 56, tau_pred = 1
+lambda = 0.001, sigma = 0.1, T = 20000, n_runs = 50
+theta0_std = 0.1, learn_c = 3.0
+OU stationary variance sigma^2/(2 lambda) = 5.000e+00
+Transient window upper bound 1/sigma^2 ~ 1.00e+02
+
+--- Fit eta_L*t vs ln(lam t), N_max = R*t, window [1000,15000] ---
+  slope = -0.089
+  intercept = 0.377
+  R^2 = 0.888
+  n_points = 71
+  theory K/(2R) = 28.0
+  K_eff (R=1) = -0.18
+  ratio empirical/theory = -0.003
+
+--- Fit with full N_max budget ---
+  slope = -0.076
+  R^2 = 0.906
+  ratio empirical/theory = -0.003
+
+Late-time (t > 10000):
+  nu = 0.822 +- 0.031
+  <eta_L>_R    = 1.018e-05
+  <eta_L>_full = 7.294e-06

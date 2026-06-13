@@ -1,0 +1,958 @@
+\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}
+
+\usepackage[utf8]{inputenc}%
+\usepackage[T1,T2A]{fontenc}%
+\usepackage[english,russian]{babel}%
+\usepackage{graphicx}%
+\usepackage{multirow}%
+\usepackage{amsmath,amssymb,amsfonts}%
+\usepackage{amsthm}%
+\usepackage{mathrsfs}%
+\usepackage[title]{appendix}%
+\usepackage{xcolor}%
+\usepackage{textcomp}%
+\usepackage{manyfoot}%
+\usepackage{booktabs}%
+\usepackage{array}%
+\usepackage{longtable}%
+\usepackage{calc}%
+\usepackage{newunicodechar}%
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\lt}{<}\providecommand{\gt}{>}
+\newunicodechar{§}{\S}
+\newunicodechar{→}{\ensuremath{\rightarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{·}{\ensuremath{\cdot}}
+\newunicodechar{⊃}{\ensuremath{\supset}}
+\newunicodechar{°}{\ensuremath{^{\circ}}}
+\newunicodechar{₀}{\textsubscript{0}}\newunicodechar{₁}{\textsubscript{1}}%
+\newunicodechar{₂}{\textsubscript{2}}\newunicodechar{₃}{\textsubscript{3}}%
+\newunicodechar{₄}{\textsubscript{4}}\newunicodechar{₅}{\textsubscript{5}}%
+\newunicodechar{₆}{\textsubscript{6}}\newunicodechar{₇}{\textsubscript{7}}%
+\newunicodechar{₈}{\textsubscript{8}}\newunicodechar{₉}{\textsubscript{9}}%
+\newunicodechar{⁰}{\textsuperscript{0}}\newunicodechar{¹}{\textsuperscript{1}}%
+\newunicodechar{²}{\textsuperscript{2}}\newunicodechar{³}{\textsuperscript{3}}%
+\newunicodechar{⁴}{\textsuperscript{4}}\newunicodechar{⁵}{\textsuperscript{5}}%
+\newunicodechar{⁶}{\textsuperscript{6}}\newunicodechar{⁷}{\textsuperscript{7}}%
+\newunicodechar{⁸}{\textsuperscript{8}}\newunicodechar{⁹}{\textsuperscript{9}}%
+\newunicodechar{⁻}{\textsuperscript{-}}\newunicodechar{≈}{\ensuremath{\approx}}%
+\newunicodechar{≤}{\ensuremath{\le}}\newunicodechar{≥}{\ensuremath{\ge}}%
+\newunicodechar{∼}{\ensuremath{\sim}}\newunicodechar{−}{\ensuremath{-}}%
+\newunicodechar{∗}{\ensuremath{\ast}}\newunicodechar{∞}{\ensuremath{\infty}}%
+\newunicodechar{τ}{\ensuremath{\tau}}\newunicodechar{ν}{\ensuremath{\nu}}%
+\newunicodechar{λ}{\ensuremath{\lambda}}\newunicodechar{σ}{\ensuremath{\sigma}}%
+\newunicodechar{α}{\ensuremath{\alpha}}\newunicodechar{η}{\ensuremath{\eta}}%
+\newunicodechar{«}{\guillemotleft}
+\newunicodechar{»}{\guillemotright}
+
+\raggedbottom
+
+\begin{document}
+
+\title[Дополнительные материалы]{Supplementary Material: Нестационарная ландауэровская эффективность}
+
+\author*[1]{\fnm{Александр} \sur{Андриишин}}\email{alexander@andriishin.com}
+
+\affil*[1]{\orgname{Independent Researcher}, \orgaddress{\city{Москва}, \country{Россия}}}
+
+\maketitle
+
+\section{S1. Полное доказательство Замечания 6 (softmax-regularity для OU)}\label{s1.-ux43fux43eux43bux43dux43eux435-ux434ux43eux43aux430ux437ux430ux442ux435ux43bux44cux441ux442ux432ux43e-ux437ux430ux43cux435ux447ux430ux43dux438ux44f-6-softmax-regularity-ux434ux43bux44f-ou}
+
+Замечание 6 (§ 4.4) утверждает: в OU-классе § 5.2 экспоненциальная декорреляция автоковариации логитов \(\theta(t)\) переносится через softmax на любой ограниченный измеримый функционал \(\xi(\theta)\) (в частности, на элементы матрицы переходов \(P_{ij}(\theta)\) и на любую достаточную статистику предсказания). Доказательство --- пять шагов: (i) Lipschitz softmax в \(\ell_\infty\); (ii) перенос на TV матрицы переходов; (iii) ограниченность OU-траектории на шаре \(R(\delta)\) с вероятностью 1\(-\delta\); (iv) перенос затухания на ковариацию \(\xi\); (v) перевод TV-границы в границу для условной MI.
+
+\subsection{S1.1 Шаг 1. Lipschitz-непрерывность softmax}\label{s1.1-ux448ux430ux433-1.-lipschitz-ux43dux435ux43fux440ux435ux440ux44bux432ux43dux43eux441ux442ux44c-softmax}
+
+Пусть \(\text{softmax}: \mathbb{R}^k \to \Delta^{k-1}\) --- стандартное отображение \(\text{softmax}_i(\theta) = \exp\theta_i / \sum_j \exp\theta_j\). Якобиан имеет вид \(\partial \text{softmax}_i / \partial \theta_j = \text{softmax}_i(\delta_{ij} - \text{softmax}_j)\); диагональные элементы \(p_i(1-p_i) \ge 0\), недиагональные \(-p_i p_j \le 0\), при этом сумма модулей по столбцу не превышает \(2 p_j\). Стандартное следствие --- оценка в \(\ell_1 / \ell_\infty\) парности:
+
+\begin{equation}\|\text{softmax}(\theta) - \text{softmax}(\theta')\|_1 \;\le\; 2 \, \|\theta - \theta'\|_\infty. \tag{S1.1}\end{equation}
+
+Вывод (S1.1) --- интегрирование Якобиана по прямой \(\theta(s) = \theta + s(\theta'-\theta)\), \(s \in [0,1]\), с применением неравенства Гёльдера к каждому компоненту градиента; константа 2 оптимальна. Стандартный результат, без дополнительных предположений о размерности \(k\).
+
+\subsection{S1.2 Шаг 2. Перенос на total variation матрицы переходов}\label{s1.2-ux448ux430ux433-2.-ux43fux435ux440ux435ux43dux43eux441-ux43dux430-total-variation-ux43cux430ux442ux440ux438ux446ux44b-ux43fux435ux440ux435ux445ux43eux434ux43eux432}
+
+В OU-параметризации § 5.2 строки матрицы переходов задаются построчным softmax над логитами: \(P_{ij}(\theta) = \exp \theta_{ij} / \sum_l \exp\theta_{il}\), причём по соглашению \(\theta_{ii} \equiv 0\). Для каждой строки \(i\) применяя (S1.1) к векторам \((\theta_{ij})_{j=1}^k\) и \((\theta'_{ij})_{j=1}^k\):
+
+\[\|P_{i,\cdot}(\theta) - P_{i,\cdot}(\theta')\|_1 \;\le\; 2 \, \max_j |\theta_{ij} - \theta'_{ij}|.\]
+
+В терминах TV-расстояния между распределениями \(P_{i,\cdot}(\theta)\) и \(P_{i,\cdot}(\theta')\) (половина \(\ell_1\)-расстояния, \(\|\mu - \nu\|_{TV} = \frac{1}{2}\|\mu - \nu\|_1\)) получается
+
+\begin{equation}\|P_{i,\cdot}(\theta) - P_{i,\cdot}(\theta')\|_{TV} \;\le\; \max_j |\theta_{ij} - \theta'_{ij}| \;\le\; \|\theta - \theta'\|_\infty. \tag{S1.2}\end{equation}
+
+Это даёт row-wise Lipschitz-константу \(L = 1\) для softmax-параметризации матрицы переходов. Координатное ограничение (вместо полной \(\|\theta - \theta'\|_\infty\) по всем строкам) существенно для шага S1.4: \(K = k(k-1)\) компонент логитов OU-системы независимы (диагональный анкер \(\theta_{ii} \equiv 0\)), и каждая строка матрицы зависит лишь от своей подсистемы из \(k-1\) компонент.
+
+\subsection{S1.3 Шаг 3. Ограниченность траектории OU с высокой вероятностью}\label{s1.3-ux448ux430ux433-3.-ux43eux433ux440ux430ux43dux438ux447ux435ux43dux43dux43eux441ux442ux44c-ux442ux440ux430ux435ux43aux442ux43eux440ux438ux438-ou-ux441-ux432ux44bux441ux43eux43aux43eux439-ux432ux435ux440ux43eux44fux442ux43dux43eux441ux442ux44cux44e}
+
+OU-процесс на каждой координате \(\theta_{ij}\) в стационарном режиме гауссов, \(\mathcal{N}(0, \sigma^2/(2\lambda))\); автоковариация \(\mathbb{E}[\theta_{ij}(t)\theta_{ij}(s)] = (\sigma^2/(2\lambda))\, e^{-|t-s|/\tau_E}\) с \(\tau_E = 1/\lambda\). По неравенству концентрации липшицевых функционалов гауссовой меры (Борелла---Чирельсона, стандартный результат теории гауссовых процессов) для одной координаты \(\Pr[\sup_{[0,T]} |\theta_{ij}(t)| > R] \le 2 \exp(-R^2 \lambda / \sigma^2)\); union bound по \(K\) координатам даёт радиус
+
+\begin{equation}R(\delta) \;=\; \sigma \sqrt{\ln(2K/\delta)/\lambda}, \tag{S1.3}\end{equation}
+
+обеспечивающий \(\Pr[\sup_{[0,T], ij} |\theta_{ij}(t)| > R(\delta)] \le \delta\). На событии \(\{\|\theta(t)\|_\infty \le R(\delta)\}\) применима локальная Lipschitz-константа softmax (S1.2), а через произведение мер --- для пары моментов \((s, t)\) одновременно.
+
+\subsection{\texorpdfstring{S1.4 Шаг 4. Перенос экспоненциального затухания на \(\xi\)}{S1.4 Шаг 4. Перенос экспоненциального затухания на \textbackslash xi}}\label{s1.4-ux448ux430ux433-4.-ux43fux435ux440ux435ux43dux43eux441-ux44dux43aux441ux43fux43eux43dux435ux43dux446ux438ux430ux43bux44cux43dux43eux433ux43e-ux437ux430ux442ux443ux445ux430ux43dux438ux44f-ux43dux430-xi}
+
+Пусть \(\xi: \mathbb{R}^K \to \mathbb{R}\) --- ограниченная измеримая функция, \(|\xi| \le B\), Lipschitz по координате с константой \(L_\xi\) в \(\ell_\infty\)-метрике: \(|\xi(\theta) - \xi(\theta')| \le L_\xi \|\theta - \theta'\|_\infty\) (для row-wise softmax-проекции \(L_\xi \le 1\) по (S1.2)). Ковариация \(\xi\) в стационарном режиме OU оценивается через её представление как разность произведений:
+
+\[\text{Cov}\bigl(\xi(\theta(t)),\, \xi(\theta(s))\bigr) \;=\; \mathbb{E}\bigl[(\xi(\theta(t)) - \bar\xi)(\xi(\theta(s)) - \bar\xi)\bigr],\]
+
+где \(\bar\xi = \mathbb{E}[\xi(\theta)]\) под стационарной мерой. На событии шага S1.3 (вероятности \(\ge 1-\delta\)) выполняется \(|\xi(\theta(t)) - \bar\xi| \le L_\xi \cdot 2 R(\delta)\) при сравнении с детерминированным значением в \(\theta = 0\) (точка симметрии стационарной меры) плюс ограниченный вклад от смещения \(\bar\xi\), поглощённый в \(|\xi| \le B\). Применение неравенства Коши---Шварца и стандартной оценки автоковариации OU \(\mathbb{E}[\theta_{ij}(t)\theta_{ij}(s)] = (\sigma^2/(2\lambda)) e^{-|t-s|/\tau_E}\) даёт
+
+\begin{equation}\bigl|\text{Cov}(\xi(\theta(t)), \xi(\theta(s)))\bigr| \;\le\; 2 B \cdot L_\xi \cdot \frac{\sigma^2}{2\lambda} \cdot e^{-|t-s|/\tau_E} + 2B^2 \delta, \tag{S1.4}\end{equation}
+
+где второе слагаемое --- поправка от события малой вероятности шага S1.3, в котором траектория выходит за шар радиуса \(R(\delta)\). Выбор \(\delta = e^{-|t-s|/\tau_E}\) для разноса событий по характерному времени декорреляции делает поправку \(\delta\)-членом того же порядка, что и ведущий экспоненциальный член. Окончательно: для любого ограниченного измеримого \(\xi\) с Lipschitz-константой \(L_\xi\) по координате логитов
+
+\begin{equation}\bigl|\text{Cov}(\xi(\theta(t)), \xi(\theta(s)))\bigr| \;\le\; C_1(B, L_\xi, \sigma, \lambda) \cdot e^{-|t-s|/\tau_E}, \tag{S1.4'}\end{equation}
+
+с явной константой \(C_1 = (B L_\xi \sigma^2/\lambda) + 2B^2\) (или меньшей при оптимизации выбора \(\delta\)). Экспоненциальное затухание автоковариации \(\theta\) переносится на \(\xi\) с тем же характерным временем \(\tau_E\) --- это и есть содержательное утверждение Замечания 6.
+
+\subsection{S1.5 Шаг 5. Перенос на условную взаимную информацию}\label{s1.5-ux448ux430ux433-5.-ux43fux435ux440ux435ux43dux43eux441-ux43dux430-ux443ux441ux43bux43eux432ux43dux443ux44e-ux432ux437ux430ux438ux43cux43dux443ux44e-ux438ux43dux444ux43eux440ux43cux430ux446ux438ux44e}
+
+Цепочка «ковариация \(\xi\) → MI» через inverse Pinsker (Sason---Verdú-типа) требует ограниченности log-density ratio \(\alpha = \log\|dP/dQ\|_\infty\), что для softmax-параметризации универсально не выполнено: даже на шаре \(R(\delta)\) шага S1.3 даёт \(\alpha \le 2R(\delta) + \log k\), а не просто \(\log k\). Поэтому шаг S1.5 строится через \emph{MI-tensorisation} по независимым координатам OU с последующим DPI на \(\xi\) --- формально корректную замену. Прямая \(\chi^2\)-tensorisation здесь неприменима: \(\chi^2\) \emph{мультипликативна} по независимости координат (\(1 + \chi^2_{\text{joint}} = \prod_{ij}(1 + \chi^2_{\text{coord}})\)), а не аддитивна, поэтому наивное неравенство «\(\chi^2_{\text{joint}} \le K \chi^2_{\text{coord}}\)» неверно для \(\chi^2\) и обходится через MI-tensorisation, которая аддитивна именно потому, что MI аддитивна по независимым координатам.
+
+\emph{Шаг 5a. KL \(\le\) \(\chi^2\) как вспомогательная оценка на координате.} Стандартное неравенство (Cover and Thomas 2006, упр. 2.45): для любых \(P_{XY}, P_X, P_Y\)
+
+\[I(X; Y) \;=\; D_{KL}\bigl(P_{XY} \,\|\, P_X \otimes P_Y\bigr) \;\le\; \chi^2\bigl(P_{XY} \,\|\, P_X \otimes P_Y\bigr).\]
+
+Это неравенство не требует ограниченности density ratio; оно держится в любой \(\sigma\)-алгебре. В шагах ниже оно применяется \emph{только покоординатно} для обоснования асимптотики \(I_{\text{coord}} = \tfrac{1}{2}\rho^2(1 + o(1))\), не для тензоризации.
+
+\emph{Шаг 5b. MI для бивариантной гауссовой пары на координате.} Для одной координаты \(\theta_{ij}\) в стационарном OU пара \((\theta_{ij}(t), \theta_{ij}(s))\) --- гауссова с нормированной корреляцией \(\rho(t,s) = e^{-|t-s|/\tau_E}\). Стандартная формула для MI бивариантного гауссова распределения с маргинальной дисперсией \(\sigma_0^2 = \sigma^2/(2\lambda)\):
+
+\begin{equation}I\bigl(\theta_{ij}(t);\, \theta_{ij}(s)\bigr) \;=\; -\frac{1}{2}\ln\bigl(1 - \rho^2(t,s)\bigr). \tag{S1.5a}\end{equation}
+
+При \(|t-s| \ge \tau_E\) имеем \(\rho^2 \le e^{-2} < 0{,}14\), и разложение Тейлора даёт \(I_{\text{coord}} = \tfrac{1}{2}\rho^2 + O(\rho^4) \le \tfrac{1}{2}\rho^2(1 + o(1)) \le \tfrac{1}{2} e^{-2|t-s|/\tau_E}\). Альтернативное выражение через \(\chi^2\) (\(\chi^2_{\text{coord}} = \rho^2/(1-\rho^2)\) --- прямое вычисление) даёт тот же лидирующий член \(\tfrac{1}{2}\rho^2\) через шаг 5a с показателем экспоненты 2\(/\tau_E\) (не 1\(/\tau_E\)); MI и \(\chi^2\) на координате согласуются по асимптотике.
+
+\emph{Шаг 5c. MI-тензоризация по \(K\) независимым координатам.} MI аддитивна по статистически независимым парам (Cover and Thomas 2006, гл. 2.5): координаты OU независимы по построению (шаг S2.1: \(W_{ij}\) независимы; ковариация диагональна), и поэтому
+
+\begin{equation}I\bigl(\theta(t);\, \theta(s)\bigr) \;=\; \sum_{ij} I\bigl(\theta_{ij}(t);\, \theta_{ij}(s)\bigr) \;\le\; \frac{K}{2} \cdot e^{-2|t-s|/\tau_E} \cdot (1 + o(1)). \tag{S1.5b}\end{equation}
+
+Аддитивность MI по независимым координатам \emph{корректна} и обходит \(\chi^2\)-tensorisation-ловушку (мультипликативность \(\prod_{ij}(1 + \chi^2_{\text{coord}})\) против ожидаемой суммы \(\sum_{ij} \chi^2_{\text{coord}}\)): MI аддитивна, \(\chi^2\) --- нет, и потому переход к итоговой константе \(K/2\) делается через MI, а не через \(\chi^2\).
+
+\emph{Шаг 5d. DPI на \(\xi\) и итоговая граница MI.} MI монотонна под измеримыми отображениями (Cover and Thomas 2006, гл. 2.8): огрубление вектора \(\theta(\cdot)\) через ограниченный измеримый \(\xi\) не увеличивает MI пары \((\xi(\theta(t)), \xi(\theta(s)))\) сверх MI исходной пары \((\theta(t), \theta(s))\). Объединяя шаги 5b--5c: для \(|t-s| \ge \tau_E\)
+
+\begin{equation}I\bigl(\xi(\theta(t));\, \xi(\theta(s))\bigr) \;\le\; I\bigl(\theta(t);\, \theta(s)\bigr) \;\le\; C_2 \cdot e^{-2|t-s|/\tau_E}, \tag{S1.5}\end{equation}
+
+с явной константой \(C_2 = K/2 \cdot (1 + o(1))\). Lipschitz-структура \(\xi\) (шаг S1.4) и ограниченность \(|\xi| \le B\) при этом не используются для MI-границы --- они нужны лишь для константы в координатном масштабе ковариационной формы (S1.4'). Условие по \(M_{\le t}^{\text{refr}}\) применяется через chain-rule на MI: обусловливание на \(M_{\le t}^{\text{refr}}\) --- функцию от \(\theta(\cdot)\) на \([s_0, t]\) --- не увеличивает MI пары \((\xi(\theta(t)), \xi(\theta(s)))\) сверх (S1.5); поправка стандартного концентрационного шага S1.3 (выход траектории за шар радиуса \(R(\delta)\)) входит в добавочное слагаемое \(\delta \cdot \ln k\) итогового утверждения (S1.6).
+
+\emph{Альтернативная цепочка.} То же затухание получается через Mehler-полугрупповое представление OU и спектральную щель эргодической диффузии: для стационарной OU-меры и ограниченных измеримых \(\xi\) корреляции и MI убывают по стандартному результату о спектральной щели гауссовых полугрупп (Bakry---Émery функциональное неравенство; см. (Pavliotis 2014, гл. 4) о спектральном разложении OU и экспоненциальной эргодичности; альтернативно --- обзор в (Levin et al.~2017, гл. 13) для дискретного аналога mixing-times). Эта формулировка короче, но требует ссылочного аппарата за пределами § 5.2; цепочка через MI-tensorisation (шаги 5b--5c) --- формально самодостаточна в рамках данной работы.
+
+\subsection{S1.6 Итоговое утверждение}\label{s1.6-ux438ux442ux43eux433ux43eux432ux43eux435-ux443ux442ux432ux435ux440ux436ux434ux435ux43dux438ux435}
+
+\textbf{Лемма S1 (supplementary, softmax-regularity OU).} \emph{В классе § 5.2 (OU-параметризация логитов \(\theta(t) \in \mathbb{R}^K\) с характерным временем \(\tau_E = 1/\lambda\) и стационарной дисперсией \(\sigma^2/(2\lambda)\)) для любого ограниченного измеримого функционала \(\xi: \mathbb{R}^K \to \mathbb{R}\) с \(|\xi| \le B\) и Lipschitz-константой \(L_\xi\) по координате логитов в \(\ell_\infty\)-метрике, и для любого \(\delta \in (0, 1)\) существует константа \(C = C(\delta, B, L_\xi, \sigma, \lambda, k)\) такая, что для всех \(s, t\) с \(|t-s| \ge \tau_E\) выполняется}
+
+\begin{equation}I\bigl(\xi(\theta(t));\, \xi(\theta(s)) \,\bigm|\, M_{\le t}^{\text{refr}}\bigr) \;\le\; C \cdot e^{-2|t-s|/\tau_E} + \delta \cdot \ln k. \tag{S1.6}\end{equation}
+
+\emph{В частности, для проекций \(P_{ij}(\theta(\cdot))\) row-wise softmax-параметризации матрицы переходов выполнено \(L_\xi \le 1\) и \(B \le 1\), что даёт явную константу \(C\), не зависящую от \(k\) при фиксированном \(\sigma^2/\lambda\).}
+
+Лемма S1 формально замыкает шаг доказательства Леммы 2 (§ 4.4), требующий обнуления \(I(M^{\text{stale}}; X_E \mid M^{\text{refr}})\) при \(\Delta t \gg \tau_E\): правая часть (S1.6) суммируется по разностям возрастов в FIFO-распределении и даёт суммарный вклад stale-фракции порядка \(O(c)\), что и используется в основном доказательстве Леммы 2 при подстановке в (8a) через (7). Условие \(|t-s| \ge \tau_E\) --- характерный масштаб, на котором экспонента не вырождена; для \(|t-s| < \tau_E\) MI ограничена \(H(\xi) \le \ln k\) тривиально, что укладывается в добавочное константное слагаемое.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{S2. Полное доказательство Замечания 5 (per-bit-uniformity для OU)}\label{s2.-ux43fux43eux43bux43dux43eux435-ux434ux43eux43aux430ux437ux430ux442ux435ux43bux44cux441ux442ux432ux43e-ux437ux430ux43cux435ux447ux430ux43dux438ux44f-5-per-bit-uniformity-ux434ux43bux44f-ou}
+
+Замечание 5 (§ 4.4) утверждает аддитивность MI по независимо обновляемым координатам логитов OU-параметризации § 5.2 с константой \(1 + o(1)\) --- допущение Леммы 2, обеспечивающее переход от арифметической доли обновлённых битов \(c\) к информационно-теоретической границе \(\nu \ge 1 - c\) в slow-driving пределе. Доказательство: (i) OU как \(K\) независимых процессов; (ii) гауссов апостериор по каждой координате; (iii) точная аддитивность MI по координатам; (iv) FIFO в \(K\)-координатной декомпозиции; (v) сравнение с оптимальным наблюдателем; (vi) итоговая граница с \(\kappa = 1 + o(1)\); (vii) пределы при нарушении независимости.
+
+\subsection{\texorpdfstring{S2.1 OU как \(K\) независимых процессов на координатах}{S2.1 OU как K независимых процессов на координатах}}\label{s2.1-ou-ux43aux430ux43a-k-ux43dux435ux437ux430ux432ux438ux441ux438ux43cux44bux445-ux43fux440ux43eux446ux435ux441ux441ux43eux432-ux43dux430-ux43aux43eux43eux440ux434ux438ux43dux430ux442ux430ux445}
+
+В § 5.2 / § 6.2 OU-параметризация задаёт логиты \(\theta_{ij}(t)\) (\(i \ne j\), \(K = k(k-1)\) свободных параметров) как независимые одномерные процессы:
+
+\begin{equation}d\theta_{ij} = -\lambda(\theta_{ij} - \theta_{ij}^*)\, dt + \sigma\, dW_{ij}, \tag{S2.1}\end{equation}
+
+где \(W_{ij}\) --- независимые винеровские процессы, \(\theta_{ij}^* = 0\) по конвенции § 6.2. Диагональные логиты \(\theta_{ii} \equiv 0\) фиксированы как анкер softmax-нормировки. Совместное распределение \(\theta(t) = (\theta_{ij}(t))_{ij}\) в стационарном режиме --- гауссово с диагональной ковариацией \(\Sigma = (\sigma^2/(2\lambda)) I_K\): координаты статистически независимы.
+
+\subsection{S2.2 Гауссов апостериор по каждой координате}\label{s2.2-ux433ux430ux443ux441ux441ux43eux432-ux430ux43fux43eux441ux442ux435ux440ux438ux43eux440-ux43fux43e-ux43aux430ux436ux434ux43eux439-ux43aux43eux43eux440ux434ux438ux43dux430ux442ux435}
+
+При наблюдении \(X_E^{[0,t]}\) под истинным \(P(t) = \text{softmax}(\theta(t))\) апостериор обучателя по \(\theta(t)\) при регулярной параметрической оценке (MLE или Robbins---Monro приближение к байесовскому обновлению § 6.2) асимптотически нормален с ковариацией \(\Sigma_{\text{post}}(t)\), элементы которой убывают как \(O(1/t)\) --- стандартный результат об асимптотической нормальности оценок максимального правдоподобия для регулярных семейств (Clarke and Barron 1990, § 3).
+
+\emph{Блочная структура Фишера.} Информационная матрица \(\mathcal{F}(\theta)\) для OU с независимыми координатами и построчным softmax --- блочно-диагональна \emph{по строкам} \(i\): разные строки дают независимый вклад в правдоподобие через независимые выборки \(\{X_t \to X_{t+1}\}\) при \(X_t = i\). Аддитивность по строкам --- точная, не приближённая.
+
+\emph{Within-row coupling.} Внутри строки \(i\) Fisher-блок имеет вид \(\mathcal{F}^{(i)}(\theta) = n_i(t) \cdot (\text{diag}(p_i) - p_i p_i^T)\), где \(p_i = (P_{ij})_{j=1}^k\) --- i-я строка softmax и \(n_i(t)\) --- число посещений состояния \(i\) к моменту \(t\). Эта матрица softmax-Fisher \textbf{не диагональна}: softmax-нормировка связывает все \(j\) через общий знаменатель. Точная аддитивность диагонального приближения \(\Sigma_{\text{post}} \approx \text{diag}(\sigma_{ij}^2)\) поэтому требует обоснования.
+
+\emph{Спектральный анализ через формулу Шура.} Матрица \(\text{diag}(p) - pp^T\) --- стандартный центрирующий проектор: имеет собственное значение \(0\) в направлении \(\mathbf{1}\) (что соответствует constraint \(\sum_j p_{ij} = 1\), операционально --- закреплению \(\theta_{ii} \equiv 0\) как softmax-анкера, см. S2.1) и собственные значения \(\{p_{ij}\}_{j \ne i}\) на ортогональном подпространстве свободных параметров. Число обусловленности Fisher-блока в свободных координатах:
+
+\begin{equation}\kappa(\mathcal{F}^{(i)}_{\text{free}}) \;=\; \frac{\max_{j \ne i} p_{ij}}{\min_{j \ne i} p_{ij}}. \tag{S2.2a}\end{equation}
+
+На событии шага S1.3 (траектория OU в шаре \(R(\delta)\) с вероятностью \(\ge 1-\delta\)) для softmax выполняется \(\max_j p_{ij} / \min_j p_{ij} \le e^{2R(\delta)}\), откуда \(\kappa(\mathcal{F}^{(i)}_{\text{free}}) \le e^{2R(\delta)}\) --- ограничено и зависит лишь от радиуса OU-шара через \(R(\delta) = \sigma\sqrt{\ln(2K/\delta)/\lambda}\) (S1.3).
+
+\emph{Поправка к диагональному приближению.} Гауссово приближение апостериора даёт \(\Sigma_{\text{post}}^{(i)} = (\mathcal{F}^{(i)}_{\text{free}})^{-1}\) с тем же спектром обратных собственных значений; недиагональность \(\Sigma_{\text{post}}\) внутри строки порождает поправку к точной аддитивности (S2.2). В slow-driving пределе \(\lambda \tau_{\text{relax}} \ll 1\) поправка имеет порядок \(O(\kappa(\Sigma_{\text{post}}^{(i)}) \cdot \lambda \tau_{\text{relax}})\): число обусловленности входит мультипликативно, поскольку внедиагональный вклад в MI ограничен через след \(\Sigma_{\text{post}}^{(i)}\), мажорируемый \(\kappa\)-кратной диагональной частью. На OU-шаре S1.3 это даёт
+
+\begin{equation}\Sigma_{\text{post}} \;=\; \text{diag}(\sigma_{ij}^2(t)) \cdot \bigl(1 + O\bigl(e^{2R(\delta)} \cdot \lambda \tau_{\text{relax}}\bigr)\bigr), \tag{S2.2b}\end{equation}
+
+что остаётся \(1 + o(1)\) при усиленном slow-driving условии \(e^{2R(\delta)} \cdot \lambda \tau_{\text{relax}} \ll 1\). В численных режимах § 6.2 (\(\sigma = 0{,}1\), \(\lambda = 10^{-3}\), \(K = 56\), \(\delta = 0{,}05\)) получается \(R(\delta) \approx 0{,}1 \cdot \sqrt{\ln(2240) / 10^{-3}} \approx 8{,}8\) --- слишком велико для буквального \(e^{2R(\delta)} \cdot \lambda \tau_{\text{relax}} \ll 1\); однако (S2.2b) --- \emph{равномерная} верхняя оценка на \(R(\delta)\)-шаре, тогда как типичная softmax-нормировка концентрирована вблизи равновесия и \(\kappa(\mathcal{F}^{(i)}_{\text{free}})\) эмпирически близок к \(1\) (численный контроль § 6.2 показывает 1\(+ o(1)\) в среднем по реализациям). Аналитическое улучшение оценки (S2.2b) --- через концентрацию softmax вокруг типичного логита, а не равномерную границу --- оставлено как уточнение в § 8.5.
+
+\subsection{S2.3 Аддитивность MI по независимым координатам}\label{s2.3-ux430ux434ux434ux438ux442ux438ux432ux43dux43eux441ux442ux44c-mi-ux43fux43e-ux43dux435ux437ux430ux432ux438ux441ux438ux43cux44bux43c-ux43aux43eux43eux440ux434ux438ux43dux430ux442ux430ux43c}
+
+Для гауссова апостериора \(\hat\theta = (\hat\theta_{ij})\) с диагональной ковариацией \(\Sigma_{\text{post}} = \text{diag}(\sigma_{ij}^2)\) выполняется \emph{точная} аддитивность MI с истинным латентом:
+
+\begin{equation}I(\hat\theta;\, \theta) \;=\; \sum_{ij} I(\hat\theta_{ij};\, \theta_{ij}). \tag{S2.2}\end{equation}
+
+Вывод: по chain rule (Cover and Thomas 2006, гл. 2.5)
+
+\[I(\hat\theta;\, \theta) \;=\; \sum_{ij} I\!\left(\hat\theta_{ij};\, \theta_{ij} \,\middle|\, \hat\theta_{\lt ij},\, \theta_{\lt ij}\right);\]
+
+независимость координат OU даёт \(\theta_{ij} \perp (\theta_{\lt ij})\) (статистическая независимость по построению), а диагональность \(\Sigma_{\text{post}}\) --- \(\hat\theta_{ij} \perp \hat\theta_{\lt ij}\) (условная независимость апостериорных оценок при заданном истинном латенте). Условные MI редуцируются к безусловным \(I(\hat\theta_{ij}; \theta_{ij})\), что и даёт (S2.2).
+
+Поправка к точной аддитивности при \(\lambda \tau_{\text{relax}} = O(\epsilon)\) --- слагаемое \(O(\epsilon)\), поглощаемое в 1\(+ o(1)\) при \(\epsilon \to 0\).
+
+\subsection{\texorpdfstring{S2.4 Refresh-фракция FIFO в \(K\)-координатной декомпозиции}{S2.4 Refresh-фракция FIFO в K-координатной декомпозиции}}\label{s2.4-refresh-ux444ux440ux430ux43aux446ux438ux44f-fifo-ux432-k-ux43aux43eux43eux440ux434ux438ux43dux430ux442ux43dux43eux439-ux434ux435ux43aux43eux43cux43fux43eux437ux438ux446ux438ux438}
+
+В FIFO-схеме обновления памяти Леммы 2 refresh-фракция размером \(c\) обновляет долю \(c\) от \(K\) координат за интервал \(\tau_E\) равномерно (определение FIFO и формулы \((*)\)). По аддитивности (S2.2) MI обновлённой фракции с истинным латентом среды декомпозируется:
+
+\begin{equation}I(M_{\le t}^{\text{refr}};\, X_E^{[t, t+\tau]}) \;=\; \sum_{ij \in \text{refr}} I(\hat\theta_{ij}^{\text{refr}};\, \theta_{ij}(t+\tau)) \;=\; c \cdot K \cdot \bar I_{\text{coord}}(t+\tau), \tag{S2.3}\end{equation}
+
+где \(\bar I_{\text{coord}}(t+\tau) := K^{-1} \sum_{ij} I(\hat\theta_{ij}; \theta_{ij}(t+\tau))\) --- средняя MI на координату при идеальной (Bayes-оптимальной для регулярного семейства) оценке. Структурно: каждая обновлённая координата вносит независимый вклад, пропорциональный \(\bar I_{\text{coord}}\); суммарная MI пропорциональна доле обновлённых координат \(c\) при \(K\)-кратной аддитивности.
+
+\subsection{S2.5 Сравнение с оптимальным наблюдателем}\label{s2.5-ux441ux440ux430ux432ux43dux435ux43dux438ux435-ux441-ux43eux43fux442ux438ux43cux430ux43bux44cux43dux44bux43c-ux43dux430ux431ux43bux44eux434ux430ux442ux435ux43bux435ux43c}
+
+MI оптимального наблюдателя (полная достаточная статистика по \(\theta(t)\)) на горизонте \(\tau\) в slow-driving пределе:
+
+\begin{equation}I_{\text{pred}}^{\text{opt}}(t, \tau) \;=\; I(X_t;\, X_{t+\tau} \mid \theta(t)) \;=\; \sum_{ij} I_{\text{coord}}(t+\tau) \;=\; K \cdot \bar I_{\text{coord}}(t+\tau), \tag{S2.4}\end{equation}
+
+где разложение по координатам использует условную независимость переходов \(X_t \to X_{t+\tau}\) по разным строкам и независимость координат логитов \(\theta\) внутри одной строки в slow-driving пределе. Аппроксимация \(\theta(t+\tau) \approx \theta(t)\) работает с точностью \(O(\sigma^2 \tau /\lambda)\): за горизонт \(\tau\) при \(\lambda \tau \ll 1\) дрейф латента малый, и MI на координату \(I_{\text{coord}}(t+\tau) = I_{\text{coord}}(t) \cdot (1 + O(\lambda \tau))\).
+
+\subsection{S2.6 Итоговая граница}\label{s2.6-ux438ux442ux43eux433ux43eux432ux430ux44f-ux433ux440ux430ux43dux438ux446ux430}
+
+Подставляя (S2.3) в (S2.4):
+
+\[\frac{I(M_{\le t}^{\text{refr}};\, X_E^{[t, t+\tau]})}{I_{\text{pred}}^{\text{opt}}(t, \tau)} \;=\; \frac{c \cdot K \cdot \bar I_{\text{coord}}(t+\tau)}{K \cdot \bar I_{\text{coord}}(t+\tau)} \;=\; c \cdot (1 + O(\lambda \tau)).\]
+
+То есть
+
+\begin{equation}I(M_{\le t}^{\text{refr}};\, X_E^{[t, t+\tau]}) \;\le\; c \cdot I_{\text{pred}}^{\text{opt}}(t, \tau) \cdot (1 + O(\lambda \tau)). \tag{S2.5}\end{equation}
+
+При \(\lambda \tau \ll 1\) (slow-driving режим, выполнено по условию класса § 5.2) и при усиленном условии \(e^{2R(\delta)} \cdot \lambda \tau_{\text{relax}} \ll 1\) из S2.2 (within-row Fisher coupling) \(1 + O(\lambda \tau) + O(e^{2R(\delta)} \lambda \tau_{\text{relax}}) = 1 + o(1)\), и (S2.5) даёт per-bit-uniformity с константой \(\kappa = 1 + o(1)\). Без усиленного условия --- \(\kappa = 1 + O(e^{2R(\delta)} \lambda \tau_{\text{relax}})\), что для конечных \(\delta, \sigma, \lambda\) даёт мультипликативную поправку, но не отменяет качественной структуры (8a) (см. также S2.7 для дополнительных источников non-diagonality). Подстановка в (7) при условии \(I(M^{\text{stale}}; X_E \mid M^{\text{refr}}) \to 0\) (Лемма S1) даёт асимптотически
+
+\begin{equation}\nu^{\text{theor}}(t) \;=\; 1 - \frac{I(M_{\le t}^{\text{refr}};\, X_E^{[t, t+\tau]})}{I_{\text{pred}}^{\text{opt}}(t, \tau)} \;\ge\; 1 - c \cdot (1 + o(1)), \tag{S2.6}\end{equation}
+
+что и есть утверждение (8a) Леммы 2 с явной константой \(\kappa = 1 + o(1)\).
+
+\subsection{S2.7 Обсуждение пределов: скоррелированные координаты}\label{s2.7-ux43eux431ux441ux443ux436ux434ux435ux43dux438ux435-ux43fux440ux435ux434ux435ux43bux43eux432-ux441ux43aux43eux440ux440ux435ux43bux438ux440ux43eux432ux430ux43dux43dux44bux435-ux43aux43eux43eux440ux434ux438ux43dux430ux442ux44b}
+
+При нарушении независимости координат OU (кросс-стрелочный дрейф с non-diagonal \(\Sigma\) в (S2.1)) per-bit-uniformity требует уточнения. Помимо межстрочной корреляции \emph{prior}, второй источник non-diagonality --- within-row Fisher coupling через softmax-нормировку (S2.2): число обусловленности Fisher-блока \(\kappa(\mathcal{F}^{(i)}_{\text{free}}) = \max_j p_{ij} / \min_j p_{ij}\) контролирует отклонение от точной аддитивности (S2.2a, S2.2b) и входит мультипликативно в финальную поправку (S2.6). Оба источника объединяются в общем condition-number аргументе.
+
+Пусть \(\kappa(\Sigma_{\text{post}})\) --- условное число (отношение максимального к минимальному собственному значению) совместной ковариации апостериора, объединяющее межстрочные prior-корреляции (S2.1, при non-diagonal \(\Sigma_{\text{prior}}\)) и within-row Fisher-корреляции (S2.2). Через гауссово представление MI \(I(\hat\theta; \theta) = (1/2) \ln \det(\Sigma_{\text{prior}} \Sigma_{\text{post}}^{-1}) = (1/2) \ln \det(I + \mathcal{F}\,\Sigma_{\text{prior}})\) (где \(\mathcal{F} = \Sigma_{\text{post}}^{-1} - \Sigma_{\text{prior}}^{-1}\) --- наблюдённая Fisher-информация, и \(\Sigma_{\text{post}}^{-1} = \Sigma_{\text{prior}}^{-1} + \mathcal{F}\)) и неравенство Hadamard \(\det(\Sigma) \le \prod_i \Sigma_{ii}\) получается верхняя граница, которая в худшем случае мажорируется \(\kappa(\Sigma_{\text{post}})\) раз большим значением, чем аддитивная сумма. В терминах константы Замечания 5:
+
+\begin{equation}\kappa \;\le\; \kappa(\Sigma_{\text{post}}) \cdot (1 + o(1)). \tag{S2.7}\end{equation}
+
+Для диагональной \(\Sigma_{\text{post}}\) (независимые координаты) \(\kappa(\Sigma_{\text{post}}) = 1\) и (S2.7) редуцируется к \(\kappa = 1 + o(1)\). Для скоррелированных координат граница ослабляется мультипликативно на \(\kappa(\Sigma_{\text{post}})\); численная оценка для конкретной кросс-параметризации --- предмет отдельного исследования. В OU-параметризации § 5.2 с независимыми \(W_{ij}\) и диагональным анкером \(\theta_{ii} \equiv 0\) условие \(\kappa(\Sigma_{\text{post}}) = 1\) выполнено по построению, и per-bit-uniformity с \(\kappa = 1 + o(1)\) применима без ограничений.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{S3. Расширенная таблица нотации}\label{s3.-ux440ux430ux441ux448ux438ux440ux435ux43dux43dux430ux44f-ux442ux430ux431ux43bux438ux446ux430-ux43dux43eux442ux430ux446ux438ux438}
+
+Глоссарий обозначений работы с указанием размерности и уравнения определения; «б/р» --- безразмерная. Сокращения: «MI» --- взаимная информация (Cover and Thomas 2006, гл. 2); «TV» --- total variation; «KL» --- Kullback---Leibler. Контексты определения --- § X.Y и формулы (N) основного текста.
+
+\subsection{S3.1 Эффективность и информационный поток}\label{s3.1-ux44dux444ux444ux435ux43aux442ux438ux432ux43dux43eux441ux442ux44c-ux438-ux438ux43dux444ux43eux440ux43cux430ux446ux438ux43eux43dux43dux44bux439-ux43fux43eux442ux43eux43a}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.1159\linewidth} >{\raggedright\arraybackslash}p{0.2464\linewidth} >{\raggedright\arraybackslash}p{0.1884\linewidth} >{\raggedright\arraybackslash}p{0.4493\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Верхняя теоретическая граница
+\end{minipage} \\
+\midrule
+\(\eta_L(t)\) & б/р, \(\in [0, 1]\) & Нестационарная ландауэровская эффективность; (10) § 5.1 & \(1\) (необратимый режим, асимптотика \(t \gg \tau_d\)) \\
+\(\eta_L^{(\tau_w)}(t)\) & б/р, \(\in [0, 1]\) & Эффективность со скользящим окном \(\tau_w\); (10a) § 5.2 & \(1\) (необратимый режим) \\
+\(\eta_L^{\text{stat}}\) & б/р & Стационарный предел \(\eta_L\); § 5.3, (Andriishin 2026, § 2.1) & \(1\) (необратимый режим) \\
+\(\eta_L^{\text{excess}}(t)\) & б/р & Вторичная эффективность через \(L_{\text{excess}}\); (S8.3) § S8 & без универсального верхнего предела (вторичная метрика) \\
+\(I_{\text{pred}}(t, \tau)\) & биты & Одношаговая predictive information при \(\hat P(t)\); (4) § 3.1 & \(\ln k\) (одношаговая, \(k = \lvert\Omega\rvert\)) \\
+\(I_{\text{pred}}^{\text{stat}}(\tau)\) & биты & Стационарный предел \(I_{\text{pred}}\); § 2.2 & \(\ln k\) (одношаговая); \(\lvert M_t\rvert\log 2\) (capacity) \\
+\(I_{\text{pred}}^{\text{opt}}(t, \tau)\) & биты & MI идеального наблюдателя с доступом к \(\theta(t)\); (7) § 4.1 & \(\ln k\) (одношаговая, \(X_t, X_{t+\tau}\) дискретны) \\
+\(I_{\text{pred}}^{\text{Bialek}}(X_E, \tau)\) & биты & Классическая predictive information (Bialek et al.~2001); § 2.2 (Andriishin 2026) & \(C_\mu\) (excess entropy, Crutchfield and Feldman 2003) \\
+\(N_{\text{max}}(t)\) & биты & Кумулятивный ландауэровский бюджет; (1) § 2.1 & \(\lvert M_t\rvert\log 2\) на активную часть памяти; не ограничен сверху во времени \\
+\(N_{\text{max}}^{(\tau_w)}(t)\) & биты & Бюджет на скользящем окне \(\tau_w\); (10a) § 5.2 & \(\lvert M_t\rvert\log 2\) на активную часть \\
+\(L_{\text{excess}}(t)\) & наты & Кумулятивная excess-loss обучателя; (S8.1) § S8 & асимптотика \((K/2)\ln(\lambda t)\) --- гипотеза (S8.2) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Различение трёх типов теоретических границ.} (i) Одношаговая граница \(\ln k\) --- стандартная capacity дискретного канала с алфавитом \(\Omega\) (Cover and Thomas 2006); контролирует мгновенную информационную ёмкость через один шаг среды. (ii) Capacity-граница \(\lvert M_t\rvert\log 2\) --- структурный потолок для интегральной информации, которую конечная память \(M_t\) из \(\lvert M_t\rvert\) битов может хранить. (iii) Excess entropy \(C_\mu\) (Crutchfield and Feldman 2003) --- суммарная predictive information между прошлым и будущим стационарного процесса, в общем случае бесконечная для нетривиальных классов. Различение: \(\ln k\) --- для одношаговой \(I_{\text{pred}}(t,\tau)\), \(\lvert M_t\rvert\log 2\) --- для ёмкостных оценок памяти, \(C_\mu\) --- для interval-MI типа \(I_{\text{pred}}^{\text{Bialek}}\).
+
+\subsection{S3.2 Энергетические потоки}\label{s3.2-ux44dux43dux435ux440ux433ux435ux442ux438ux447ux435ux441ux43aux438ux435-ux43fux43eux442ux43eux43aux438}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(E_{\text{actual}}^{\text{curr}}(t)\) & Дж & Текущая операционная диссипация; § 2.1 \\
+\(E_{\text{store}}(t)\) & Дж & Кумулятивная стоимость удержания старой памяти; § 2.1 \\
+\(E_{\text{grow}}(t)\) & Дж & Кумулятивная стоимость расширения памяти; § 2.1 \\
+\(\dot{E}_{\text{store}}(t)\) & Вт & Мгновенная мощность удержания; Лемма 1 § 2.3 \\
+\(\dot{E}_{\text{grow}}(t)\) & Вт & Мгновенная мощность расширения; § 2.4 \\
+\(\dot{E}_{\text{store}}^{\text{nostalg}}(t)\) & Вт & Мощность удержания ностальгической фракции; (8) § 4.2 \\
+\(E_{\text{store}}^{(1)}(t)\) & Дж & Минимальная диссипация на удержание одного бита; (2) Лемма 1 \\
+\(E_{\text{grow}}^{(1)}\) & Дж & Минимальная диссипация на создание одного бита ёмкости; (3) § 2.4 \\
+\(\eta_{\text{ex}}\) & б/р & Эксергетический КПД метаболизма; (Andriishin 2026, § 3.5) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.3 Память и её слои}\label{s3.3-ux43fux430ux43cux44fux442ux44c-ux438-ux435ux451-ux441ux43bux43eux438}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(M_t\) & биты (размер); конфигурация & Актуальный (обновляемый) слой памяти; § 3.1 \\
+\(M_{\lt t}\) & биты; конфигурация & Архивный слой памяти; § 3.1 \\
+\(M_{\le t} = (M_t, M_{\lt t})\) & биты; конфигурация & Полная память системы; § 3.1 \\
+\(M_{\le t}^{\text{refr}}\) & биты & Refresh-фракция (обновлена за интервал \(\tau_E\)); § 4.4 \\
+\(M_{\le t}^{\text{stale}}\) & биты & Stale-фракция (не обновлена за \(\tau_E\)); § 4.4 \\
+\(\lvert M_{\le t}\rvert\) & биты & Размер активной части памяти; § 4.4, (11b) § 5.3 \\
+\(\lvert M_{\le t}^{\text{cap}}\rvert\) & биты & Структурный лимит ёмкости памяти; (12) § 5.3 \\
+\(\dot{M}_{\text{refresh}}(t)\) & биты/с & Темп обновления памяти; § 4.4, (13) § 7 \\
+\(\dot{M}_{\text{grow}}(t)\) & биты/с & Темп роста ёмкости памяти; (13) § 7 \\
+\(\dot{M}_{\text{refresh}}^{\text{eff}}(t)\) & биты/с & Эффективный темп refresh для Robbins---Monro; § 6.2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.4 Латентные параметры и оценки}\label{s3.4-ux43bux430ux442ux435ux43dux442ux43dux44bux435-ux43fux430ux440ux430ux43cux435ux442ux440ux44b-ux438-ux43eux446ux435ux43dux43aux438}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(\theta(t)\) & \(\mathbb{R}^K\) & Истинные логиты матрицы переходов среды; § 5.2 \\
+\(\hat\theta(t)\) & \(\mathbb{R}^K\) & Оценка логитов обучателем; § 6.2 \\
+\(\theta_{ij}(t)\) & \(\mathbb{R}\) & Координата логита, \(i \ne j\); § 5.2 \\
+\(P(t)\) & \(k \times k\) стохастическая & Матрица переходов среды; § 5.2 \\
+\(\hat P(t)\) & \(k \times k\) стохастическая & Оценка матрицы переходов обучателем; § 3.1 \\
+\(X_t\) & \(\in \Omega\) & Состояние среды в момент \(t\); § 3.1 \\
+\(X_E^{[t, t+\tau]}\) & траектория & Реализация среды на окне \([t, t+\tau]\); (1a) (Andriishin 2026) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.5 Параметры моделей и временные шкалы}\label{s3.5-ux43fux430ux440ux430ux43cux435ux442ux440ux44b-ux43cux43eux434ux435ux43bux435ux439-ux438-ux432ux440ux435ux43cux435ux43dux43dux44bux435-ux448ux43aux430ux43bux44b}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(k\) & целое; \(\lvert\Omega\rvert\) & Размер алфавита состояний среды; § 5.2, § 6.1 \\
+\(K = k(k-1)\) & целое & Размерность логитов OU-параметризации; § 5.2 \\
+\(\Omega\) & конечное множество & Алфавит состояний марковской цепи; § 3.1 \\
+\(\lambda\) & 1/с & Темп OU-релаксации; обратная характерному времени дрейфа \(\tau_E\); § 5.2 \\
+\(\sigma\) & \(\sqrt{1/\text{с}}\) & Амплитуда OU-шума; § 5.2 \\
+\(\alpha\) & б/р & Параметр Dirichlet для PSP; § 6.1 \\
+\(\tau\) & с & Горизонт предсказания одношаговой \(I_{\text{pred}}\); (4) § 3.1 \\
+\(\tau_d\) & с & Характерное время диссипации/отклика системы; § 2.1 (Andriishin 2026) \\
+\(\tau_w\) & с & Ширина скользящего окна оценщика; § 6.1, § 5.2 \\
+\(\tau_E = 1/\lambda\) & с & Характерное время дрейфа среды; § 5.2 \\
+\(\tau_{\text{relax}}\) & с & Время релаксации марковской цепи на срезе; § 5.2, § 6.1 \\
+\(\tau_{1/2}\) & с & Время полураспада точности чтения бита; Лемма 1 § 2.3 \\
+\(\tau_{\text{reset}}^*\) & с & Оптимальный интервал сброса памяти; (12) § 5.3 \\
+\(T\) & К & Температура термостата-приёмника; § 2.1 (Andriishin 2026) \\
+\(\varepsilon\) & б/р, \(\in (0, 1/2)\) & Порог точности чтения бита; Лемма 1 § 2.3 \\
+\(\gamma\) & 1/с & Симметричная переходная скорость в Лемме 1; § 2.3 \\
+\(\eta_t\) & б/р & Шаг Robbins---Monro обучателя; § 6.2 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.6 Ностальгия и режимный порог}\label{s3.6-ux43dux43eux441ux442ux430ux43bux44cux433ux438ux44f-ux438-ux440ux435ux436ux438ux43cux43dux44bux439-ux43fux43eux440ux43eux433}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(\nu(t)\) & б/р, \(\in [0, 1]\) & Ностальгия (общий символ, контекст определяет вариант); § 4.1 \\
+\(\nu^{\text{theor}}(t)\) & б/р, \(\in [0, 1]\) & Теоретическая ностальгия через \(I_{\text{pred}}^{\text{opt}}\); (7) § 4.1 \\
+\(\nu^{\text{op}}(t)\) & б/р, \(\in [0, 1]\) & Операциональная ностальгия через \(C_\mu^{\text{emp}}\); (7') § 4.1 \\
+\(\nu_c\) & б/р, \(\in (0, 1)\) & Критическое значение / порог режимного перехода; (11b) § 5.3 \\
+\(\nu_c^{\text{theor}}\) & б/р, \(\in (0, 1)\) & Теоретическая критическая ностальгия; (11b) § 5.3 \\
+\(\nu_c^{\text{op}}\) & б/р, \(\in (0, 1)\) & Операциональная критическая ностальгия; § 8.6 П.1 \\
+\(\nu_c^{\text{emp}}\) & б/р, \(\in (0, 1)\) & Эмпирический прокси из § 6.1 (PSP-симуляция); § 6.1 \\
+\(c\) & б/р & Вычислимая константа \(\dot{M}_{\text{refresh}} \tau_E / \lvert M_{\le t}\rvert\); (*) § 4.4 \\
+\(\eta_M\) & б/р & Memory-balance ratio \(\dot{M}_{\text{refresh}} \tau_{1/2}/\lvert M_{\le t}\rvert\); (11b) § 5.3 \\
+\(\kappa\) & б/р, \(\ge 1\) & Per-bit-uniformity константа Замечания 5; § 4.4, § S2.6 \\
+\(\rho(t)\) & б/р & Метрика информационного омоложения; (13) § 7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.7 Информационная сложность и диагностические прокси}\label{s3.7-ux438ux43dux444ux43eux440ux43cux430ux446ux438ux43eux43dux43dux430ux44f-ux441ux43bux43eux436ux43dux43eux441ux442ux44c-ux438-ux434ux438ux430ux433ux43dux43eux441ux442ux438ux447ux435ux441ux43aux438ux435-ux43fux440ux43eux43aux441ux438}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(C_v^{\text{static}}(t)\) & биты & Структурная сложность (Lempel---Ziv, assembly); § 4.3 \\
+\(C_v^{\text{predictive}}(t)\) & биты & Динамическая предсказательная сила; (9) § 4.3 \\
+\(C_\mu\) & биты & Statistical complexity Crutchfield---Feldman (Crutchfield and Feldman 2003) \\
+\(C_\mu^{\text{emp}}(t, \tau)\) & биты & Эмпирическая excess-entropy на скользящем окне; (7') § 4.1 \\
+\(h_\mu\) & биты/символ & Энтропийная скорость; § 4.3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.8 Active inference (§ 7)}\label{s3.8-active-inference-7}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.2105\linewidth} >{\raggedright\arraybackslash}p{0.4474\linewidth} >{\raggedright\arraybackslash}p{0.3421\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность/тип
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Определение
+\end{minipage} \\
+\midrule
+\(G[\pi]\) & наты & Expected free energy политики \(\pi\); § 7 / S7 \\
+\(G^{\text{epist}}[\pi]\) & наты & Эпистемическая компонента EFE (выигрыш в информации); § 7 / S7 \\
+\(G^{\text{prag}}[\pi]\) & наты & Прагматическая компонента EFE (предпочтение); § 7 / S7 \\
+\(q(s, o, \pi)\) & плотность & Generative model в active inference (Friston et al.~2017a; Parr et al.~2022); § 7 / S7 \\
+\(p(o', s' \mid C)\) & плотность & Распределение предпочтений с целевым параметром \(C\); § 7 / S7 \\
+\(\beta = 1/(k_B T)\) & 1/Дж & Обратная температура для перевода нат в Дж; (S7.1) § 7 / S7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{S3.9 Фундаментальные постоянные}\label{s3.9-ux444ux443ux43dux434ux430ux43cux435ux43dux442ux430ux43bux44cux43dux44bux435-ux43fux43eux441ux442ux43eux44fux43dux43dux44bux435}
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.1778\linewidth} >{\raggedright\arraybackslash}p{0.2889\linewidth} >{\raggedright\arraybackslash}p{0.5333\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Символ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Размерность
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Значение / определение
+\end{minipage} \\
+\midrule
+\(k_B\) & Дж/К & Постоянная Больцмана \\
+\(k_B T \ln 2\) & Дж & Минимальная плата за одно стирание (Landauer 1961) \\
+\(\ln 2\) & б/р & Множитель перевода нат → биты \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{S4. Параметры симуляций для воспроизводимости}\label{s4.-ux43fux430ux440ux430ux43cux435ux442ux440ux44b-ux441ux438ux43cux443ux43bux44fux446ux438ux439-ux434ux43bux44f-ux432ux43eux441ux43fux440ux43eux438ux437ux432ux43eux434ux438ux43cux43eux441ux442ux438}
+
+Раздел собирает технические параметры численных иллюстраций § 6.1 (PSP), § 6.2 (OU) и § S8.3 (адиабатический скан). Реализация --- \texttt{andriishin/landauer-nostalgia-oa}, директории \texttt{simulations/markov\_drift\{,\_ou,\_ou\_iinf\_adiab\}/}. Зерно \(\text{SEED} = 20260524\) с per-run-offsets; запуск \texttt{python\ main.py} в каждой директории восстанавливает приведённые численные значения с точностью до версии используемых библиотек.
+
+\subsection{S4.1 PSP-симуляция (§ 6.1)}\label{s4.1-psp-ux441ux438ux43cux443ux43bux44fux446ux438ux44f-6.1}
+
+\emph{Класс модели.} Кусочно-стационарный марковский процесс с пуассоновскими сменами матрицы переходов. Алфавит \(\Omega = \{1, \ldots, k\}\), \(k = 8\). На интервале \([T_i, T_{i+1})\) матрица переходов \(P^{(i)}\) постоянна; моменты смены \(\{T_i\}\) --- пуассоновский поток с интенсивностью \(\lambda\). В момент \(T_i\) матрица обновляется до случайной стохастической \(P^{(i)}\) с независимыми строками, каждая строка --- Dirichlet с параметром \(\alpha = 0,3\).
+
+\emph{Базовые параметры.} \(k = 8\), \(\alpha = 0,3\), \(\lambda = 10^{-3}\) (для режимов с дрейфом), горизонт предсказания \(\tau = 1\) шаг.
+
+\emph{Темп релаксации.} \(\langle \tau_{\text{relax}} \rangle \approx 2\)-- \(3\) шагов при \(\alpha = 0,3\); \(\lambda \tau_{\text{relax}} \approx 3 \cdot 10^{-3} \ll 1\) --- slow-driving выполнено с запасом.
+
+\emph{Три режима} (§ 5.3):
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.1556\linewidth} >{\raggedright\arraybackslash}p{0.2444\linewidth} >{\raggedright\arraybackslash}p{0.2222\linewidth} >{\raggedright\arraybackslash}p{0.1111\linewidth} >{\raggedright\arraybackslash}p{0.2667\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+Режим
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\lambda\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\tau_w\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(T\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Реализаций
+\end{minipage} \\
+\midrule
+Стационар & \(0\) & \(100\) & \(10^4\) & \(80\) \\
+Дрейф без сброса & \(10^{-3}\) & \(\infty\) & \(10^5\) & \(60\) \\
+Дрейф со сбросом & \(10^{-3}\) & \(\{100, 500, 2000\}\) & \(10^5\) & \(60\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\emph{Сетка \(\tau_w\) для Рис. 2.} Восемь точек \(\tau_w \in \{50, 100, 200, 500, 10^3, 2 \cdot 10^3, 5 \cdot 10^3, 10^4\}\), \(\lambda = 10^{-3}\), \(T = 5 \cdot 10^4\), \(40\) реализаций на точку.
+
+\emph{Оценщик MI.} KL-detuned proxy \(\widehat I_{\text{pred}}(t,\tau) = I_{\text{opt}}(P(t), \tau) - \mathbb{E}_{X_t \sim \pi(t)}[D_{KL}(P(t)^\tau(\cdot \mid X_t) \| \hat P(t)^\tau(\cdot \mid X_t))]\) с отсечением снизу нулём; сопоставление с независимыми оценками: дискретный plug-in с коррекцией Treves---Panzeri (Treves and Panzeri 1995) и непрерывный KSG-оценщик с \(k\)-NN, \(k_{NN} = 3\) (Kraskov et al.~2004); согласованность на сетке проверена.
+
+\emph{Бюджет \(N_{\text{max}}\).} В симуляции принята нормировка \(k_B T \ln 2 = 1\) и \(N_{\text{max}}(t) = N_0 + R \cdot t\) с \(R = 1\) единица в шаг (базовая операционная плата плюс плата по Лемме 1 на \(|M_t| = k^2 = 64\) удерживаемых параметрах).
+
+\emph{Объём вычислений.} Сложность на реализацию \(O(T \cdot k^2 \cdot \tau_w)\); базовая стационарная параметризация (\(T = 10^4\), \(\tau_w = 100\), \(k = 8\)) --- \(\sim 6 \cdot 10^7\) операций.
+
+\emph{Ключевые численные результаты.} Стационар: \(\eta_L \approx 6{,}1 \cdot 10^{-5}\) при \(t > 5 \cdot 10^3\). Дрейф без сброса: \(\nu_\infty(t > 60000) \approx 0,999 \pm 0,001\), \(\eta_L\) убывает на \(\sim 3\) декады. Сетка \(\tau_w\): оптимум \(\tau_w^* \approx 200\), \(\langle\eta_L\rangle \approx 1{,}3 \cdot 10^{-5}\). Эмпирический \(\nu_c^{\text{emp}} \approx 0,44\) в момент полураспада \(\eta_L\).
+
+\emph{Команда воспроизведения и выходы.} \texttt{python\ simulations/markov\_drift/main.py}; время прогона \(\sim 5\)-- \(10\) минут; выходы --- \texttt{results\_summary.\{txt,json\}}, \texttt{run.log}, фигуры \texttt{paper/figs/fig\{1,2,3\}\_*.png}.
+
+\subsection{S4.2 OU-симуляция (§ 6.2)}\label{s4.2-ou-ux441ux438ux43cux443ux43bux44fux446ux438ux44f-6.2}
+
+\emph{Класс модели.} Марковская цепь с непрерывным OU-дрейфом логитов матрицы переходов. \(k = 8\), \(K = k(k-1) = 56\) свободных параметров. Уравнения OU \(d\theta_{ij} = -\lambda(\theta_{ij} - \theta_{ij}^*)\, dt + \sigma\, dW_{ij}\) с \(\theta_{ij}^* = 0\), независимыми \(W_{ij}\) для \(i \ne j\), и фиксированным \(\theta_{ii} \equiv 0\) как softmax-анкер. Дискретизация Эйлера---Маруямы с \(\Delta t = 1\).
+
+\emph{Базовые параметры.} \(k = 8\), \(\lambda = 10^{-3}\), \(\sigma = 0{,}1\), \(T = 2 \cdot 10^4\) шагов, \(50\) независимых реализаций OU-процесса; начальные логиты \(\theta(0) \sim \mathcal{N}(0, 0{,}1^2)\).
+
+\emph{Безразмерные параметры.} \(\sigma^2/\lambda = 10\); стационарная дисперсия логитов \(\sigma^2/(2\lambda) = 5\) --- сильный режим флуктуаций (не OU-concentration). Транзиентное окно \(1/\sigma^2 = 10^2\) шагов.
+
+\emph{Аппроксимация байесовского обучателя.} Robbins---Monro online-обновление с убывающим шагом \(\eta_t = c_0 / \sqrt{t}\), \(c_0 = 3\); на каждом шаге \(\hat\theta_{x_t, j}(t+1) = \hat\theta_{x_t, j}(t) + \eta_t \cdot (\mathbb{1}[x_{t+1} = j] - \hat P_{x_t, j}(t))\) для \(j \ne x_t\). Скорость \(1/\sqrt{t}\) соответствует концентрации апостериора по каждому из \(K\) направлений и асимптотически Bayes-оптимальна для регулярных параметрических моделей (Clarke and Barron 1990, § 3).
+
+\emph{Эффективный темп refresh.} \(\dot{M}_{\text{refresh}}^{\text{eff}}(t) \sim K c_0 / (\tau_E \sqrt{t})\); при \(K = 56\), \(\tau_E = 10^3\), \(t = 2 \cdot 10^4\) даёт \(\sim 0{,}17\) обновлений на шаг; константа \((*)\) \(c(t) = \dot{M}_{\text{refresh}}^{\text{eff}} \cdot \tau_E / |M_{\le t}| \approx K c_0 / (|M_{\le t}| \sqrt{t}) \approx 0{,}02\) при \(|M_{\le t}| = K\). Это обосновывает численный gap \(\nu(t > 10^4) \approx 0{,}82\) против предсказания \(\liminf \nu^{\text{theor}} \ge 1 - c \approx 0{,}98\) (§ 6.2; конечность времени наблюдения и Замечание 5 покрывают разрыв \(\approx 0{,}16\)).
+
+\emph{Бюджет.} Два варианта: (а) \(N_{\text{max}} = R t\) с \(R = 1\) и (б) полный \(N_{\text{max}}^{\text{full}} = R t + \nu(t) \cdot K / \tau_{1/2}\) с \(\tau_{1/2} = 100\). Кривые \(\eta_L(t)\) качественно идентичны.
+
+\emph{Ключевые численные результаты.} На поздних временах (\(t > 10^4\)): \(\nu = 0{,}822 \pm 0{,}031\); \(\langle \eta_L \rangle_R \approx 1{,}0 \cdot 10^{-5}\), \(\langle \eta_L \rangle_{\text{full}} \approx 7{,}3 \cdot 10^{-6}\). Фит \(\eta_L \cdot t\) против \(\ln(\lambda t)\) на \([10^3, 1{,}5 \cdot 10^4]\): \(n = 71\) точек, \(R^2 = 0{,}888\) при \(N_{\text{max}} = R t\); \(R^2 = 0{,}906\) при полном бюджете.
+
+\emph{Команда воспроизведения и выходы.} \texttt{python\ simulations/markov\_drift\_ou/main.py}; время прогона \(\sim 1\) минута; выходы --- \texttt{results\_summary.\{txt,json\}}, \texttt{run.log}, фигуры \texttt{paper/figs/fig\{4,5\}\_ou\_*.png}.
+
+\subsection{S4.3 Адиабатический скан (§ S8.3)}\label{s4.3-ux430ux434ux438ux430ux431ux430ux442ux438ux447ux435ux441ux43aux438ux439-ux441ux43aux430ux43d-s8.3}
+
+\emph{Класс модели.} OU-параметризация § 6.2 без изменений (\(k = 8\), \(\lambda = 10^{-3}\), \(K = 56\), Эйлер---Маруяма \(\Delta t = 1\), Robbins---Monro \(\eta_t = c_0 / \sqrt{t}\), \(c_0 = 3\)). Измеряемая величина --- кумулятивная excess-loss \(L_{\text{excess}}(t)\) по (S8.1) с прямым доступом к ground truth \(\theta(s)\).
+
+\emph{Параметрический скан.} Три значения \(\sigma\) при фиксированном \(\lambda = 10^{-3}\):
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.1316\linewidth} >{\raggedright\arraybackslash}p{0.2632\linewidth} >{\raggedright\arraybackslash}p{0.1842\linewidth} >{\raggedright\arraybackslash}p{0.2632\linewidth} >{\raggedright\arraybackslash}p{0.1579\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+\(\sigma\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\sigma^2/\lambda\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+1\(/\sigma^2\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(T_{\text{total}}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Реализаций
+\end{minipage} \\
+\midrule
+\(0{,}01\) & \(10^{-1}\) & \(10^4\) & 5\(\cdot 10^4\) & \(25\) \\
+\(0{,}003\) & 9\(\cdot 10^{-3}\) & \(1{,}1 \cdot 10^5\) & 5\(\cdot 10^4\) & \(25\) \\
+\(0{,}001\) & \(10^{-3}\) & \(10^6\) & 2\(\cdot 10^5\) & \(25\) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Время симуляции \(T\) выбрано в пределах транзиентного окна 1\(/\sigma^2\) для каждой \(\sigma\).
+
+\emph{Совместная подгонка.} \(L_{\text{excess}}(t) = A \cdot t + B \cdot \ln(\lambda t) + C\) на окне \(t \in [10^3, 10^4]\) (фиксированном для прямого сопоставления между \(\sigma\)).
+
+\emph{Отрицательный контроль с расширенным окном.} Дополнительный фит с расширенным окном \([10^3, T_{\text{total}}]\): при \(\sigma^2/\lambda = 10^{-3}\) и \(T_{\text{total}} = 2 \cdot 10^5\) коэффициент \(B/(K/2)\) растёт до \(2{,}0\) --- артефакт Robbins---Monro 1\(/\sqrt{t}\)-смещения обучателя на длинных горизонтах, не часть BNT-эффекта. Этот контроль фиксирует чувствительность результата к выбору окна и предотвращает интерпретацию монотонного тренда \(B/(K/2)\) как результата выборочного предъявления.
+
+\emph{Ключевые численные результаты.} \(B/(K/2) = \{0{,}54, 0{,}78, 0{,}85\}\) при \(\sigma^2/\lambda \in \{10^{-1}, 9 \cdot 10^{-3}, 10^{-3}\}\) соответственно; \(R^2 \ge 0{,}9995\) во всех точках; drift-share \(A \cdot t / L_{\text{excess}}(t)\) при \(t = 10^4\) падает с 76\(\%\) до 10\(\%\). Монотонный рост \(B\) при \(\sigma^2/\lambda \to 0\) согласуется с гипотезой § S8.1, но не доказывает сходимости \(B \to K/2\); необходимы \(5\)-- \(6\) точек скана с явной аналитической формой finite-\(\sigma\) correction \(B(\epsilon) = (K/2)(1 - g(\epsilon))\).
+
+\emph{Команда воспроизведения и выходы.} \texttt{python\ simulations/markov\_drift\_ou\_iinf\_adiab/main.py}; время прогона \(\sim 1\) минута; выходы --- \texttt{results\_summary.\{txt,json\}}, \texttt{run.log}, фигуры \texttt{simulations/markov\_drift\_ou\_iinf\_adiab/fig\_adiab\_*.png}, скопированные в \texttt{paper/figs/fig\{6,7\}\_adiab\_*.png}.
+
+\subsection{S4.4 Воспроизводимость: зависимости и архивация}\label{s4.4-ux432ux43eux441ux43fux440ux43eux438ux437ux432ux43eux434ux438ux43cux43eux441ux442ux44c-ux437ux430ux432ux438ux441ux438ux43cux43eux441ux442ux438-ux438-ux430ux440ux445ux438ux432ux430ux446ux438ux44f}
+
+\emph{Зерно и зависимости.} Глобальное \(\text{SEED} = 20260524\) установлено в начале \texttt{main.py} каждого скрипта; per-run-offsets обеспечивают независимость реализаций. Зависимости --- \texttt{numpy}, \texttt{scipy}, \texttt{scikit-learn} (KSG), \texttt{matplotlib}; точные версии --- в \texttt{requirements.txt} каждой директории.
+
+\emph{Полный набор команд.} В корне репозитория последовательно \texttt{python\ simulations/markov\_drift\{,\_ou,\_ou\_iinf\_adiab\}/main.py}; суммарное время прогона на ноутбуке среднего класса \(\sim 7\)-- \(12\) минут.
+
+\emph{Zenodo-архивация.} Версионированный снимок с DOI заархивирован на Zenodo (DOI: 10.5281/zenodo.20653051, релиз \texttt{v1.0-submission}); воспроизведение возможно также через клонирование \texttt{andriishin/landauer-nostalgia-oa} на теге \texttt{v1.0-submission} (тот же снимок, заархивированный на Zenodo).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{\texorpdfstring{S5. Полный аппарат § 5 main: Замечания 1--6 к Лемме 2, протокол § 5.2, \(\nu_c\) и \(\tau_{\text{reset}}^*\)}{S5. Полный аппарат § 5 main: Замечания 1--6 к Лемме 2, протокол § 5.2, \textbackslash nu\_c и \textbackslash tau\_\{\textbackslash text\{reset\}\}\^{}*}}\label{s5.-ux43fux43eux43bux43dux44bux439-ux430ux43fux43fux430ux440ux430ux442-5-main-ux437ux430ux43cux435ux447ux430ux43dux438ux44f-16-ux43a-ux43bux435ux43cux43cux435-2-ux43fux440ux43eux442ux43eux43aux43eux43b-5.2-nu_c-ux438-tau_textreset}
+
+Раздел собирает формальные детали § 5 main, вынесенные сюда для разгрузки основного изложения. Структура: S5.1 --- шесть Замечаний к Лемме 2 (§ 4.4 main фиксирует формулировку (8a) и краткое утверждение; здесь --- полная их развёртка); S5.2 --- пункт 5 протокола § 5.2 main (запрет на пересмотр определения объекта измерения) c обоснованием через (Wolpert 1996) no-free-lunch; S5.3 --- балансовое условие существования \(\nu_c\) через (11b) и обсуждение его структурного статуса; S5.4 --- оптимальный \(\tau_{\text{reset}}^*\) (12), связь с dynamic regret bounds (Besbes et al.~2015); S5.5 --- аналогия со спин-стёклами через (Hopfield 1982; Amit et al.~1985; Engel and Van den Broeck 2001).
+
+\subsection{S5.1 Шесть Замечаний к Лемме 2}\label{s5.1-ux448ux435ux441ux442ux44c-ux437ux430ux43cux435ux447ux430ux43dux438ux439-ux43a-ux43bux435ux43cux43cux435-2}
+
+\textbf{Замечание 1 (стационарный предел).} Стационарный предел Леммы 2 задаётся \emph{не} \(\tau_E \to \infty\) (этот переход нарушает условие \(c < 1\) по \((*)\) main), а формулой (1) main при \(\dot{E}_{\text{store}} = \dot{E}_{\text{grow}} = 0\) (§ 2.2 main): в этом режиме ностальгические биты не несут платы, и шкала \(\nu^{\text{theor}}\) через (7) main теряет термодинамический смысл (то же для \(\nu^{\text{op}}\) при \(\hat P \to P_0\)). Таким образом, Лемма 2 не противоречит стационарной лемме (Andriishin 2026, § 2.1), а \emph{дополняет} её на новый режим: при \(\dot E_{\text{store}} > 0\) или \(\dot E_{\text{grow}} > 0\) актуально условие (8a), а в стационарном пределе оно вырождается через обнуление обеих ставок.
+
+\textbf{Замечание 2 (вычислимость и фальсифицируемость \((*)\)).} Константа \(c\) из \((*)\) main --- \emph{вычислимая} функция трёх измеримых параметров \((\dot{M}_{\text{refresh}}, \tau_E, |M_{\le t}|)\), не свободный параметр теории. Лемма 2 применима при измеренных \(c < 1\); при \(c \ge 1\) система переходит в режим \emph{скользящего окна}: за интервал \(\tau_E\) полностью обновляется вся память, архивного слоя нет, и нестационарная теория вырождается. Тест на \(c\) --- эмпирическое условие применимости, разделяющее системы с архивным слоем и без него. LLM с длинным контекстом и \(M_t\)-слоем порядка \(10^5\)-- \(10^6\) токенов на инференсе дают \(\dot{M}_{\text{refresh}} \tau_E \gg |M_t|\), \(c \gg 1\), и Лемма 2 относит их к скользящему окну --- теория по собственному условию выводит этот слой из области применимости (§ 8.3 main).
+
+\textbf{Замечание 3 (содержательность (8a) сверх определения).} Доля \(1-c\) --- арифметическая (отношение числа необновлённых битов к полному размеру памяти), а \(\nu^{\text{theor}}\) по (7) main --- информационно-теоретическая (нормированный дефицит MI). Содержательная часть Леммы 2 --- доказательство, что MI-вклад необновлённого бита в \(I_{\text{pred}}(t,\tau)\) асимптотически обнуляется по DPI через decorrelation OU-латента с характерным временем \(\tau_E\) (см. подробное доказательство в S1 supplementary через MI-тензоризацию по независимым координатам OU, § S1.5). Требуются три условия: (i) декорреляция оптимальной статистики с \(\tau_E\); (ii) идеальный наблюдатель в знаменателе (7) main; (iii) FIFO-refresh. При нарушении любого из (i)--(iii) неравенство (8a) не выводится из арифметического \(c\).
+
+\textbf{Замечание 4 (распространение на общий нестационарный класс).} Базовая Лемма 2 доказана для OU-параметризации логитов (§ 5.2 main, S1--S2 supplementary). PSP-суррогат (§ 6.1 main) и мультимасштабный дрейф воспроизводят результат \emph{иллюстративно} при \(\lambda \tau_{\text{relax}} \ll 1\) через единый механизм декорреляции с эффективным \(\tau_E\), но строгого доказательства для не-OU классов в настоящей работе нет; см. § 8.5 main, открытая задача. Wolpert no-free-lunch (Wolpert 1996) даёт фундаментальное обоснование сужения класса § 5.2: универсальная теория нестационарной обучаемости без априорного ограничения класса невозможна; class slow-driving --- необходимое сужение, не методологический выбор.
+
+\textbf{Замечание 5 (per-bit-uniformity).} Переход от арифметической доли необновлённых битов \(c\) к информационно-теоретическому неравенству \(\nu \ge 1 - c\) требует аддитивности MI по независимо обновляемым битам:
+
+\[I(M^{\text{refr}}; X_E^{[t,t+\tau]}) \le c \cdot I_{\text{pred}}^{\text{opt}} \cdot (1+o(1)).\]
+
+В slow-driving пределе refresh-фракция не накапливает кросс-битовой избыточности (Clarke and Barron 1990); полное доказательство этого утверждения для OU-параметризации --- S2 supplementary. При нарушении условия \(c \to \kappa c\), \(\kappa \ge 1\), и Лемма 2 формулируется с мультипликативной поправкой \(\nu \ge 1 - \kappa c\); в OU-классе с независимыми \(W_{ij}\) и диагональным анкером \(\theta_{ii} \equiv 0\) условие per-bit-uniformity выполнено по построению с \(\kappa = 1 + o(1)\) (S2.6 supplementary).
+
+\textbf{Замечание 6 (softmax-regularity для OU).} Перенос OU-декорреляции с автоковариации логитов \(\theta(t)\) на любой ограниченный измеримый функционал \(\xi(\theta)\) (в частности, на элементы матрицы переходов \(P_{ij}(\theta)\) и на любую достаточную статистику предсказания) обеспечивается Lipschitz-непрерывностью softmax по total variation на множестве логитов с конечной стационарной дисперсией \(\sigma^2/(2\lambda)\). Через MI-тензоризацию по независимым координатам OU (§ S1.5) и DPI экспоненциальное затухание \(\mathbb{E}[\theta(t)\theta(s)] \propto e^{-(t-s)/\tau_E}\) переносится на любой ограниченный \(\xi\) с тем же характерным временем \(\tau_E\). Полное доказательство --- S1 supplementary (пять шагов: Lipschitz softmax в \(\ell_\infty\); перенос на TV матрицы переходов; ограниченность OU-траектории на шаре \(R(\delta)\) с вероятностью 1\(-\delta\); перенос затухания на ковариацию \(\xi\); перевод TV-границы в границу для условной MI через \(\chi^2\) и DPI).
+
+Лемма 2 в свете Замечаний 1--6 конструктивна: при \((*)\) указывает явный механизм возникновения ностальгии (рассинхронизация оптимального признака через OU-декорреляцию) и физическое препятствие к её нулю (конечный темп обновления памяти при FIFO-планировании). Совместное действие Замечаний 5--6 --- структурное обоснование заявленной асимптотики \(\nu \ge 1 - c\) в OU-классе § 5.2 main; Замечание 2 фиксирует область применимости через измеримое условие \(c < 1\).
+
+\subsection{S5.2 Протокол § 5.2 main, пункт 5: запрет на пересмотр определения объекта измерения}\label{s5.2-ux43fux440ux43eux442ux43eux43aux43eux43b-5.2-main-ux43fux443ux43dux43aux442-5-ux437ux430ux43fux440ux435ux442-ux43dux430-ux43fux435ux440ux435ux441ux43cux43eux442ux440-ux43eux43fux440ux435ux434ux435ux43bux435ux43dux438ux44f-ux43eux431ux44aux435ux43aux442ux430-ux438ux437ux43cux435ux440ux435ux43dux438ux44f}
+
+Пункт 5 протокола (§ 5.2 main) --- обязательство предрегистрации, защищающее фальсифицируемость: операциональное определение измеряемой величины фиксируется \emph{до} данных и не пересматривается под прежним именем теории после их получения. При систематическом расхождении предсказания и измерения остаются два честных хода: (а) опровергнуть теорию; (б) явно сменить её имя, оставив старое имя за исходным определением. Правило симметрично --- оно одинаково связывает теоретика и эмпирика.
+
+\emph{Зачем это нужно.} Стандартный ответ на провал эмпирического теста --- либо отвергнуть теорию, либо сузить условия её применимости (добавить оговорки); оба хода легитимны и сохраняют тест строгим. Пункт 5 закрывает лишь третий, методологически сомнительный путь --- пересмотр самого \emph{операционального определения} объекта измерения с сохранением имени теории (классическое ad hoc спасение в смысле Поппера, замаскированное под техническое уточнение операционализации). Симметрия делает дисциплину честной в обе стороны: эмпирик не «уточняет» определение измеряемой величины post hoc, чтобы данные сошлись с теорией; теоретик не «уточняет» определение предсказываемой величины post hoc, чтобы они разошлись.
+
+\emph{Как это исполнено в работе.} Кумулятивная excess-loss \(L_{\text{excess}}(t)\) (S8.1) удержана в § S8 как отдельный, явно помеченный counterfactual-диагностик, а не используется как операционально измеримая \(I_{\text{pred}}\): \(L_{\text{excess}}\) требует доступа к ground truth \(\theta(s)\), недоступному в реальных биологических системах, поэтому отождествление её с одношаговой MI (4) main под именем «predictive information» было бы post hoc пересмотром объекта измерения. Теоретические конструкции (Лемма 2, \(\nu_c\), \(C_v^{\text{predictive}}\)) опираются на \(\nu^{\text{theor}}\) по (7) main; операциональные предсказания (§ 8.6 main, П.1, П.2) --- на \(\nu^{\text{op}}\) по (7') main. Подмена под одним именем исключена; раздельное счетоводство двух величин --- нет.
+
+\subsection{\texorpdfstring{S5.3 Существование \(\nu_c\): балансовое условие (11b) и его структурный статус}{S5.3 Существование \textbackslash nu\_c: балансовое условие (11b) и его структурный статус}}\label{s5.3-ux441ux443ux449ux435ux441ux442ux432ux43eux432ux430ux43dux438ux435-nu_c-ux431ux430ux43bux430ux43dux441ux43eux432ux43eux435-ux443ux441ux43bux43eux432ux438ux435-11b-ux438-ux435ux433ux43e-ux441ux442ux440ux443ux43aux442ux443ux440ux43dux44bux439-ux441ux442ux430ux442ux443ux441}
+
+Балансовая оценка из условия равенства прироста \(\dot{I}_{\text{pred}}\) и потерь от устаревания (формула (11b) main):
+
+\[\nu_c^{\text{theor}} \cdot |M_{\le t}| / \tau_{1/2} = (1 - \nu_c^{\text{theor}}) \cdot \dot{M}_{\text{refresh}}.\]
+
+Безразмерный \(\eta_M := \dot{M}_{\text{refresh}} \tau_{1/2} / |M_{\le t}|\) даёт формально \(\nu_c^{\text{theor}} = \eta_M / (1 + \eta_M)\); прямая подстановка в этой простейшей форме даёт численные значения, не согласующиеся с эмпирическим прокси § 6.1 main (\(\nu_c^{\text{emp}} \approx 0{,}44\) против \(\nu_c \approx 0{,}016\) при \(\eta_M\) базовой параметризации PSP --- расхождение более чем на порядок).
+
+\emph{Структурный статус (11b).} (11b) трактуется как \emph{структурное балансовое условие}, не количественный предсказатель: работа постулирует существование \(\nu_c^{\text{theor}} \in (0, 1)\) как неподвижной точки баланса прироста информации и потерь от устаревания. Расхождение с эмпирическим \(\nu_c^{\text{emp}}\) поддерживает это решение --- прямая подстановка простейшей формы (11b) отвергается, что и фиксируется как граница её интерпретативной силы. Вывод количественной формулы \(\nu_c^{\text{theor}}(\lambda, \sigma, K, \tau_{1/2}, \dot M_{\text{refresh}})\) --- открытая задача § 8.5 main.
+
+\emph{Активная часть памяти.} В (11b) \(|M_{\le t}|\) --- \emph{активная} часть памяти, не структурный лимит ёмкости \(|M_{\le t}^{\text{cap}}|\). В § 6.1 main: \(|M_t| = k^2 = 64\) параметров оценщика; эта величина растёт с временем в системах с расширяющейся памятью, и численное значение \(\nu_c^{\text{theor}}\) зависит от времени. Эмпирический прокси \(\nu_c^{\text{emp}}\) § 6.1 main --- это \(\nu^{\text{op}}_c\) по (7') main, не \(\nu^{\text{theor}}_c\); рабочее допущение § 4.1 main о стабильности режимного порога под сменой нормировки обеспечивает переход между ними с возможным численным сдвигом.
+
+\subsection{\texorpdfstring{S5.4 Оптимальный \(\tau_{\text{reset}}^*\) и связь с dynamic regret}{S5.4 Оптимальный \textbackslash tau\_\{\textbackslash text\{reset\}\}\^{}* и связь с dynamic regret}}\label{s5.4-ux43eux43fux442ux438ux43cux430ux43bux44cux43dux44bux439-tau_textreset-ux438-ux441ux432ux44fux437ux44c-ux441-dynamic-regret}
+
+Оптимальный \(\tau_{\text{reset}}^*\) максимизирует \(\langle \eta_L \rangle\): частый сброс увеличивает плату, редкий ведёт к ностальгическому коллапсу (§ 5.3 main). Структурная оценка:
+
+\[\tau_{\text{reset}}^* \sim \tau_E \cdot \log(|M_{\le t}^{\text{cap}}|/\dot{M}_{\text{refresh}} \tau_E),\]
+
+где \(|M_{\le t}^{\text{cap}}|\) --- структурный лимит ёмкости памяти. Логарифмическая зависимость --- отражение стандартной формы оптимума для процессов с экспоненциальным устареванием и линейной платой за обновление.
+
+\emph{Биологическая аналогия.} Время поколения таксона коррелирует с темпом изменения эконише --- эмпирическая закономерность популяционной биологии, согласующаяся с (12) main с точностью до логарифмического множителя. У млекопитающих в раннем эмбриогенезе и герминальной линии происходит почти полное стирание метилирования ДНК с повторной установкой (Reik 2007); это можно трактовать как механизм \(\tau_{\text{reset}}^*\) на поколенческой шкале --- периодический сброс ностальгического слоя ради восстановления \(\nu \to 0\) в новом поколении.
+
+\emph{Связь с dynamic regret bounds.} В non-stationary stochastic optimization (Besbes et al.~2015) (Theorem 2, stochastic setting) regret-оптимальная длина restart-эпохи имеет \emph{степенную} структуру: оптимальная длина \(\propto (T/V_T)^{2/3}\), где \(V_T\) --- вариация цели на горизонте \(T\). Это отлично от логарифмической формы \(\tau_{\text{reset}}^* \sim \tau_E \log(\cdot)\) main §8.4(b): главный текст даёт \emph{логарифмическую} форму через линейную плату за обновление с экспоненциальным устареванием, тогда как BGZ regret-optimal restart --- \emph{степенную} \((T/V_T)^{2/3}\). Совпадает лишь монотонность по \(\tau_E\) (медленнее дрейф --- реже сброс), не функциональная форма. В no-free-lunch (Wolpert 1996) универсальный \(\tau_{\text{reset}}^*\) невозможен, что согласуется с условностью (12) main относительно класса § 5.2 main.
+
+\subsection{S5.5 Аналогия со спин-стёклами}\label{s5.5-ux430ux43dux430ux43bux43eux433ux438ux44f-ux441ux43e-ux441ux43fux438ux43d-ux441ux442ux451ux43aux43bux430ux43cux438}
+
+(11b) main --- баланс среднего поля, структурно аналогичный реплика-симметрии в статистической механике обучения (Engel and Van den Broeck 2001). В классической модели Хопфилда (Hopfield 1982) критическая нагрузка \(\alpha_c \approx 0{,}138\) (Amit et al.~1985) --- порог, за которым ассоциативная память теряет способность извлекать запомненные паттерны без ошибок. Наш \(\nu_c^{\text{theor}}\) есть аналог в неравновесной обучающейся системе: порог, за которым ностальгическая фракция превышает критическую долю и предсказательная сила \(\eta_L(t)\) коллапсирует.
+
+Количественная связь между \(\nu_c^{\text{theor}}\) и \(\alpha_c\) Хопфилда --- отдельная задача: \(\alpha_c\) --- отношение числа запомненных паттернов к числу нейронов в эквилибриумной системе с фиксированным набором мишеней, \(\nu_c^{\text{theor}}\) --- пороговое отношение ностальгической фракции в неравновесной системе с дрейфующим латентным параметром. Структурное соответствие --- обе величины отражают предельную нагрузку на ёмкость памяти в системах с фиксированным числом степеней свободы; динамические же характеристики существенно различны.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{S6. Полные технические детали § 6 main: PSP-параметры, Robbins---Monro learner, контроль с расширенным окном}\label{s6.-ux43fux43eux43bux43dux44bux435-ux442ux435ux445ux43dux438ux447ux435ux441ux43aux438ux435-ux434ux435ux442ux430ux43bux438-6-main-psp-ux43fux430ux440ux430ux43cux435ux442ux440ux44b-robbinsmonro-learner-ux43aux43eux43dux442ux440ux43eux43bux44c-ux441-ux440ux430ux441ux448ux438ux440ux435ux43dux43dux44bux43c-ux43eux43aux43dux43eux43c}
+
+Раздел собирает технические детали численных иллюстраций § 6.1 (PSP) и § 6.2 (OU) main, которые в основном тексте оставлены в виде краткой формулировки результатов с cross-ref сюда. Структура: S6.1 --- полные параметры PSP-симуляции (§ 6.1 main) и оценщик MI; S6.2 --- псевдокод симуляции и сравнительный анализ оценщиков; S6.3 --- Robbins---Monro online learner OU-симуляции (§ 6.2 main) и его асимптотическая Bayes-оптимальность; S6.4 --- численная оценка \(c\) для Robbins---Monro и расхождение с предсказанием (8a); S6.5 --- отрицательный контроль с расширенным окном адиабатического скана и расхождение \(C_v^{\text{static}}/ C_v^{\text{predictive}}\); S6.6 --- эмпирический \(\nu_c^{\text{emp}}\) и его статус.
+
+Все параметры воспроизводимости (зерно, версии библиотек, директории) --- S4 supplementary (параметры симуляций для воспроизводимости); этот раздел сосредоточен на методологическом обосновании выбора параметров и интерпретации результатов.
+
+\subsection{S6.1 PSP-симуляция (§ 6.1 main): полные параметры и оценщик}\label{s6.1-psp-ux441ux438ux43cux443ux43bux44fux446ux438ux44f-6.1-main-ux43fux43eux43bux43dux44bux435-ux43fux430ux440ux430ux43cux435ux442ux440ux44b-ux438-ux43eux446ux435ux43dux449ux438ux43a}
+
+\emph{Модель.} Конечно-состояний марковский процесс с пуассоновскими сменами матрицы переходов. Алфавит \(\Omega = \{1, \ldots, k\}\), \(k = 8\). Матрица \(P(t)\) кусочно-постоянна на интервалах \([T_i, T_{i+1})\); моменты смены \(\{T_i\}\) --- пуассоновский поток с интенсивностью \(\lambda\). В момент \(T_i\) матрица обновляется до случайной стохастической \(P^{(i)} \sim \text{Dirichlet}(\alpha = 0{,}3)\) по строкам. \(\alpha = 0{,}3\) даёт \(\langle \tau_{\text{relax}} \rangle \approx 2\)-- \(3\) шагов и \(\lambda \tau_{\text{relax}} \approx 3 \cdot 10^{-3} \ll 1\) с запасом --- slow-driving выполнено.
+
+\emph{Память наблюдателя.} Система-наблюдатель удерживает память \(M_t\), состоящую из оценки текущей матрицы переходов \(\hat{P}(t)\) по скользящему окну длины \(\tau_w\) с Laplace-сглаживанием (псевдоотсчёт 1 на ячейку). Структурная размерность памяти \(|M_t| = k^2 = 64\) параметров --- число независимых ячеек оценщика; для бюджета \(N_{\text{max}}(t) = N_0 + R \cdot t\) в симуляции принята нормировка \(k_B T \ln 2 = 1\) и \(R = 1\) единица в шаг (базовая операционная плата плюс Лемма 1 на \(k^2\) удерживаемых параметрах).
+
+\emph{Параметры трёх режимов.} Стационарный режим: \(\lambda = 0\) (матрица не меняется), \(\tau_w = 100\), \(T = 10^4\) шагов, усреднение по 80 реализациям. Дрейф без сброса: \(\lambda = 10^{-3}\) (среднее \(\tau_E = 10^3\) шагов между сменами), \(\tau_w \to \infty\) (память не очищается, \(\hat{P}(t)\) усредняется по всей истории), \(T = 10^5\) шагов, 60 реализаций. Дрейф со сбросом: \(\lambda = 10^{-3}\), \(\tau_w \in \{100, 500, 2000\}\), \(T = 10^5\), 60 реализаций.
+
+\emph{Сетка \(\tau_w\) для Рис. 2.} Восемь точек \(\tau_w \in \{50, 100, 200, 500, 10^3, 2\cdot 10^3, 5\cdot 10^3, 10^4\}\) при \(\lambda = 10^{-3}\), \(T = 5 \cdot 10^4\), 40 реализаций на точку.
+
+\subsection{S6.2 Псевдокод симуляции и сравнительный анализ MI-оценщиков}\label{s6.2-ux43fux441ux435ux432ux434ux43eux43aux43eux434-ux441ux438ux43cux443ux43bux44fux446ux438ux438-ux438-ux441ux440ux430ux432ux43dux438ux442ux435ux43bux44cux43dux44bux439-ux430ux43dux430ux43bux438ux437-mi-ux43eux446ux435ux43dux449ux438ux43aux43eux432}
+
+\emph{Псевдокод PSP-симуляции.}
+
+\begin{verbatim}
+для каждого условия (λ, τ_w):
+    инициализировать P_0, выбрать T_1 ~ Exp(λ)
+    инициализировать память: empirical_freq = матрица нулей (k × k)
+    для t = 0, 1, ..., T:
+        если t == T_i: обновить P до случайной P^(i) ~ Dirichlet(α=0,3, k строк),
+                       выбрать T_{i+1}
+        X_t = сэмпл из P_t[X_{t-1}, :]
+        обновить empirical_freq[X_{t-1}, X_t] += 1
+        если t mod τ_w == 0 и τ_w < ∞: empirical_freq = 0  # сброс
+        P_hat(t) = empirical_freq нормировать по строкам (с Laplace smoothing)
+        вычислить I_pred(t, τ) = MI(X_{t+1..t+τ}; P_hat(t))
+        вычислить ν(t) = 1 - I_pred(t,τ) / I_pred^optimal(P_t, τ)
+        накопить N_max(t) = накопленная стоимость хранения empirical_freq + рост ёмкости
+        η_L(t) = I_pred(t, τ) / N_max(t)
+для каждого набора (λ, τ_w): построить графики η_L(t), ν(t)
+\end{verbatim}
+
+\emph{Оценщик MI: KL-detuned proxy.} При горизонте предсказания \(\tau\) численная оценка ядрового определения (4) main проводится через
+
+\[\widehat I_{\text{pred}}(t, \tau) = I_{\text{opt}}(P(t), \tau) - \mathbb{E}_{X_t \sim \pi(t)}\!\bigl[ D_{\text{KL}}\!\bigl(P(t)^\tau(\cdot \mid X_t)\,\|\,\hat{P}(t)^\tau(\cdot \mid X_t)\bigr) \bigr],\]
+
+отсечённый снизу нулём. Здесь \(I_{\text{opt}}(P, \tau) = H(\pi) - \sum_i \pi_i H(P^\tau_{i,\cdot})\) --- predictive information оптимального наблюдателя с точной моделью; вычитается KL-штраф за несоответствие \(\hat{P}\) истинному \(P\). Связь с (4) main: для марковской цепи с фиксированным оценщиком \(\widehat I_{\text{pred}}(t, \tau)\) мажорируется условной MI \(I(X_t; X_{t+\tau}\mid\hat P(t))\) сверху (KL-штраф учитывает дезадаптацию модели как нижнюю границу потерь информативности); отсечение снизу нулём обеспечено тем, что условная MI неотрицательна. На эргодическом плато \(\hat P(t) \to P(t)\) KL-штраф обнуляется, и \(\widehat I_{\text{pred}} \to I_{\text{opt}} = I(X_t; X_{t+\tau}\mid P_0)\), что согласовано с (4) main в стационарном пределе.
+
+\emph{Сравнение с независимыми оценщиками.} Альтернативные дискретные оценки MI с коррекцией смещения (Treves and Panzeri 1995) и непрерывный KSG-оценщик с \(k\)-NN, \(k_{NN} = 3\) (Kraskov et al.~2004) дают согласованные результаты на сетке параметров PSP-симуляции. Согласованность трёх независимых оценщиков (KL-detuned proxy, Treves---Panzeri plug-in, KSG) на одних и тех же траекториях подтверждает, что наблюдаемые качественные паттерны (Рис. 1--3 main) --- не артефакт конкретного метода оценки MI.
+
+\emph{Куполообразная зависимость \(\langle \eta_L \rangle(\tau_w)\).} Куполообразная кривая Рис. 2 main с максимумом \(\langle \eta_L \rangle^* \approx 1{,}3 \cdot 10^{-5}\) при \(\tau_w^* \approx 200\) шагов (плато \(200\)-- \(500\)) --- нестационарный аналог bias-variance компромисса классической теории обучения: малый \(\tau_w\) --- высокая дисперсия оценщика \(\hat P\) (недостаточно данных), большой \(\tau_w\) --- смещение из-за усреднения по неактуальным режимам; оптимум \(\tau_w^*\) --- баланс, аналогичный structural risk minimization.
+
+Положение максимума \(\tau_w^* \approx 0{,}2\,\tau_E\) согласуется с (12) main с точностью до логарифмического множителя; точное значение оптимума зависит от мелких параметров оценщика (Laplace-сглаживание, \(\alpha\) Dirichlet).
+
+\subsection{S6.3 Robbins---Monro online learner OU-симуляции (§ 6.2 main)}\label{s6.3-robbinsmonro-online-learner-ou-ux441ux438ux43cux443ux43bux44fux446ux438ux438-6.2-main}
+
+\emph{Поддержание онлайн-оценки.} В OU-симуляции (§ 6.2 main) обучатель поддерживает онлайн-оценку \(\hat\theta(t)\) через максимизацию условного логарифма правдоподобия с убывающим шагом \(\eta_t = c_0/\sqrt{t}\) (\(c_0 = 3\)): на каждом шаге при наблюдении \((x_t \to x_{t+1})\) выполняется
+
+\[\hat\theta_{x_t,j}(t+1) = \hat\theta_{x_t,j}(t) + \eta_t \cdot \bigl[\mathbb{1}[x_{t+1} = j] - \hat P_{x_t,j}(t)\bigr]\]
+
+для \(j \ne x_t\). Это диффузионно-prior-Bayes-аппроксимация байесовского обновления по OU-латенту в смысле § 5.2 main; скорость \(1/\sqrt{t}\) соответствует concentration апостериора по каждому из \(K\) направлений и асимптотически Bayes-оптимальна для регулярных параметрических моделей (Clarke and Barron 1990, § 3).
+
+\emph{Polyak---Ruppert averaging note.} Стандартное улучшение Robbins---Monro --- усреднение итераций Polyak---Ruppert даёт асимптотически эффективную оценку с меньшей дисперсией; в настоящей реализации не использовано, поскольку наблюдаемые качественные паттерны (Рис. 4--5 main) робастны к выбору варианта Robbins---Monro в пределах log-факторов на финальную дисперсию. Использование Polyak---Ruppert изменило бы количественные значения \(\eta_L(t)\) на константный множитель, но не качественную картину коллапса.
+
+\emph{Структурная эквивалентность Bayes.} Robbins---Monro с указанной скоростью \(\eta_t \propto 1/\sqrt{t}\) структурно эквивалентна online-аппроксимации байесовского обновления по OU-латенту § 5.2 main в следующем смысле: посткумулятивное распределение оценок \(\hat\theta(t)\) при \(t \to \infty\) концентрируется вокруг условного среднего апостериора с ковариацией порядка \(\mathcal{F}^{-1}/t\), где \(\mathcal{F}\) --- Fisher information matrix параметрической модели (Clarke and Barron 1990). Это обоснование выбора \(\eta_t \propto 1/\sqrt{t}\) как функционально эквивалентного байесовскому обучателю.
+
+\subsection{\texorpdfstring{S6.4 Численная оценка \(c\) для Robbins---Monro и расхождение с (8a)}{S6.4 Численная оценка c для Robbins---Monro и расхождение с (8a)}}\label{s6.4-ux447ux438ux441ux43bux435ux43dux43dux430ux44f-ux43eux446ux435ux43dux43aux430-c-ux434ux43bux44f-robbinsmonro-ux438-ux440ux430ux441ux445ux43eux436ux434ux435ux43dux438ux435-ux441-8a}
+
+\emph{Эффективный темп refresh.} Адаптивный шаг \(\eta_t = c_0/\sqrt t\) с \(c_0 = 3\) даёт эффективный темп refresh \(\dot M_{\text{refresh}}^{\text{eff}}(t) \sim K \cdot \eta_t / \tau_E = K c_0/(\tau_E \sqrt t)\); при \(K = 56\), \(\tau_E = 10^3\), \(t = 2 \cdot 10^4\) получается
+
+\[c(t) = \frac{\dot M_{\text{refresh}}^{\text{eff}} \cdot \tau_E}{|M_{\le t}|} \approx \frac{K c_0}{|M_{\le t}| \sqrt t} \approx \frac{56 \cdot 3}{56 \cdot \sqrt{2 \cdot 10^4}} \approx 0{,}02.\]
+
+\emph{Расхождение с предсказанием Леммы 2.} Лемма 2 даёт \(\liminf \nu^{\text{theor}}(t) \ge 1 - c \approx 0{,}98\). Наблюдаемое \(\nu(t > 10^4) = 0{,}82 \pm 0{,}03\) --- \emph{ниже} предсказанной асимптоты; разрыв \(\approx 0{,}16\) объясняется (i) конечностью времени наблюдения (асимптотика (8a) main --- \(\liminf\) при \(t \to \infty\)); (ii) допущением per-bit-uniformity Замечания 5 (S5.1 supplementary), выполняющимся лишь приближённо для OU-параметризации логитов с softmax-нелинейностью (Замечание 6). Полное доказательство сходимости к \(1-c\) для конкретной OU-параметризации --- открытая задача § 8.5 main.
+
+\subsection{\texorpdfstring{S6.5 Отрицательный контроль с расширенным окном и расхождение \(C_v^{\text{static}}/C_v^{\text{predictive}}\)}{S6.5 Отрицательный контроль с расширенным окном и расхождение C\_v\^{}\{\textbackslash text\{static\}\}/C\_v\^{}\{\textbackslash text\{predictive\}\}}}\label{s6.5-ux43eux442ux440ux438ux446ux430ux442ux435ux43bux44cux43dux44bux439-ux43aux43eux43dux442ux440ux43eux43bux44c-ux441-ux440ux430ux441ux448ux438ux440ux435ux43dux43dux44bux43c-ux43eux43aux43dux43eux43c-ux438-ux440ux430ux441ux445ux43eux436ux434ux435ux43dux438ux435-c_vtextstaticc_vtextpredictive}
+
+\emph{Отрицательный контроль с расширенным окном.} При расширении окна совместной подгонки адиабатического скана (§ S8.3) до \([10^3, T_{\text{total}}]\) (вместо фиксированного \([10^3, 10^4]\)) фит вырождается: при \(\sigma^2/\lambda = 10^{-3}\) и \(T_{\text{total}} = 2\cdot 10^5\) коэффициент \(B/(K/2)\) растёт до 2,0 --- артефакт Robbins---Monro 1\(/\sqrt t\)-bias обучателя на длинных горизонтах, не часть BNT-эффекта. Окно \([10^3, 10^4]\) выбрано для прямого сопоставления между точками адиабатической серии и согласовано с transient-условием \(t \ll 1/\sigma^2\). Этот контроль фиксирует чувствительность результата к выбору окна фита и предотвращает интерпретацию монотонного тренда \(B/(K/2)\) как результата выборочного предъявления.
+
+\emph{Численный scan \(B/(K/2) \in \{0{,}54, 0{,}78, 0{,}85\}\).} Полные результаты --- § S8.3 (таблица \(B\), \(B/(K/2)\), \(R^2\), drift-share); S4.3 supplementary (параметры скана).
+
+\emph{Расхождение \(C_v^{\text{static}}/C_v^{\text{predictive}}\).} В режиме «дрейф без сброса» (§ 6.1 main) при \(\nu(t) \to 0{,}999\) имеем \(C_v^{\text{predictive}}(t) = (1 - \nu(t)) \cdot C_v^{\text{static}}(t) \to 0\), тогда как \(C_v^{\text{static}}\) остаётся ограниченным снизу размером накопленной памяти \(\hat P(t)\). Отношение \(C_v^{\text{static}}/ C_v^{\text{predictive}} \to \infty\) --- численная иллюстрация диагностического сигнала ностальгии (§ 4.3 main): два прокси, согласующиеся в стационарном режиме, расходятся при наблюдаемом дрейфе. Это операционализирует Предсказание 1 § 8.6 main: пересечение \(\nu_c^{\text{op}}\) диагностируется через расхождение двух прокси, без прямого измерения \(\nu(t)\).
+
+\subsection{\texorpdfstring{S6.6 Эмпирический \(\nu_c^{\text{emp}}\) и его статус}{S6.6 Эмпирический \textbackslash nu\_c\^{}\{\textbackslash text\{emp\}\} и его статус}}\label{s6.6-ux44dux43cux43fux438ux440ux438ux447ux435ux441ux43aux438ux439-nu_ctextemp-ux438-ux435ux433ux43e-ux441ux442ux430ux442ux443ux441}
+
+Эмпирический \(\nu_c^{\text{emp}}\), определённый как значение \(\nu(t)\) в момент, когда \(\eta_L(t)\) падает вдвое от своего пика в режиме дрейфа без сброса, составляет \(\nu_c^{\text{emp}} \approx 0{,}44\) для базовой параметризации PSP. Это значение согласуется со структурным утверждением § 5.3 main о существовании \(\nu_c \in (0, 1)\), разделяющего адаптивный режим и режим коллапса, но \textbf{не претендует на универсальную количественную оценку}: \(\nu_c^{\text{emp}}\) зависит от выбранного оперативного определения (порог полураспада \(\eta_L\)) и от параметров конкретного PSP-суррогата.
+
+\emph{Расхождение с (11b).} Прямая балансовая подстановка \(\nu_c = \eta_M/(1+\eta_M) \approx 0{,}016\) в (11b) main отвергается эмпирически --- расхождение более чем на порядок. Это поддерживает решение § 5.3 main / S5.3 supplementary трактовать (11b) как структурное балансовое условие, не как количественный предсказатель. Вывод универсальной формулы \(\nu_c(\lambda, \sigma, K, \tau_{1/2}, \dot M_{\text{refresh}})\) --- открытая задача § 8.5 main.
+
+\emph{Стабильность под сменой нормировки.} По DPI \(\nu^{\text{op}}(t) \le \nu^{\text{theor}}(t)\) pointwise (§ 4.1 main; меньший знаменатель \(C_\mu^{\text{emp}} \le I_{\text{pred}}^{\text{opt}}\) в (7') даёт больший фрагмент и меньшую ностальгию); следовательно эмпирический \(\nu_c^{\text{emp}}\) --- это \(\nu^{\text{op}}_c\), оценка снизу для \(\nu^{\text{theor}}_c\). Рабочее допущение § 4.1 main о монотонности режимного порога под сменой нормировки обеспечивает применимость эмпирического \(\nu_c^{\text{emp}}\) как операционального суррогата теоретического \(\nu_c^{\text{theor}}\) с возможным численным сдвигом, но без качественного смещения порога.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{\texorpdfstring{S7. Active inference: полное формальное соответствие \(\eta_L\) и EFE, \(\rho(t)\), оговорки}{S7. Active inference: полное формальное соответствие \textbackslash eta\_L и EFE, \textbackslash rho(t), оговорки}}\label{s7.-active-inference-ux43fux43eux43bux43dux43eux435-ux444ux43eux440ux43cux430ux43bux44cux43dux43eux435-ux441ux43eux43eux442ux432ux435ux442ux441ux442ux432ux438ux435-eta_l-ux438-efe-rhot-ux43eux433ux43eux432ux43eux440ux43aux438}
+
+Раздел собирает формальные детали § 7 main, вынесенные сюда для разгрузки основного изложения. Структура: S7.1 --- heuristic correspondence \(\Delta G^{\text{epist}}\) ↔ \(-\Delta I_{\text{pred}}\) (S7.1), полное обоснование с переводом единиц; S7.2 --- conjecture (S7.2) с явным гипотетическим статусом и обсуждение направления формализации; S7.3 --- категориальная оговорка \(I_q(s'; o') \ne I(X_t; X_{t+\tau})\) через достаточность \(\hat P(t)\); S7.4 --- контекст sophisticated inference (Friston et al.~2021) и Pearl/Friston-blanket (Bruineberg et al.~2018; Bruineberg et al.~2022) демаркация; S7.5 --- парирование Andrews (2021) / Williams (2020) через cross-ref на paper \#1; S7.6 --- метрика информационного омоложения \(\rho(t)\) подробно с эмпирической интерпретацией.
+
+\subsection{S7.1 Heuristic correspondence: полное обоснование}\label{s7.1-heuristic-correspondence-ux43fux43eux43bux43dux43eux435-ux43eux431ux43eux441ux43dux43eux432ux430ux43dux438ux435}
+
+В формулировке active inference (Friston et al.~2017a, ур. 3; Parr2022, гл. 7) expected free energy политики \(\pi\) исчисляется в натах и есть
+
+\[G[\pi] = \mathbb{E}_{q(o', s' \mid \pi)}\!\left[\ln q(s' \mid \pi) - \ln p(o', s'\mid C)\right],\]
+
+где \(p(o', s'\mid C)\) --- распределение предпочтений с параметром \(C\), кодирующим цели агента. Каноническое разложение раскладывает \(G = -\mathbb{E}_q[D_{\text{KL}}(q(s'\mid o',\pi) \|q(s'\mid\pi))] - \mathbb{E}_q[\ln p(o'\mid C)]\) на эпистемическую ценность (информационный выигрыш о скрытых состояниях) и прагматическую ценность (близость к предпочтениям).
+
+\emph{Конверсия единиц.} \(G\) измеряется в натах; \(I_{\text{pred}}\) --- в битах (Приложение A main). Перевод: \(G_{\text{[нат]}} = G_{\text{[бит]}} \cdot \ln 2\); конверсия в энергетические единицы через \(\beta = 1/(k_B T)\) даёт \(E_G = k_B T \cdot G_{\text{[нат]}}\). Аналогично \(E_{I_{\text{pred}}} = k_B T \ln 2 \cdot (I_{\text{pred}})_{\text{[бит]}}\). Для приращения за окно политики \(\Delta t\):
+
+\begin{equation}k_B T \cdot \Delta G^{\text{epist}}[\pi]\bigr|_{\Delta t} \approx -k_B T \ln 2 \cdot \Delta I_{\text{pred}}\bigr|_{\Delta t}, \tag{S7.1}\end{equation}
+
+с точностью до аддитивной константы, поглощающей прагматический вклад и не зависящей от \(\pi\). Обе стороны имеют размерность энергии (Дж); знак минус отражает соглашение «\(G\) минимизируется при максимизации \(\dot{I}_{\text{pred}}\)»; эквивалентная безразмерная форма получается делением на \(k_B T\).
+
+\emph{Гипотетический статус.} (S7.1) фиксируется как \emph{heuristic correspondence}, не как доказанное неравенство. Доказательство строгого неравенства требует (i) аккуратной работы с временными производными в нестационарной generative model; (ii) демонстрации, что прагматический вклад действительно не зависит от \(\pi\) на временной шкале \(\Delta t\); (iii) учёта поправок от категориальной оговорки S7.3. Все три ингредиента отсутствуют в существующей литературе по active inference в нестационарном режиме.
+
+\subsection{S7.2 Conjecture: гипотетический статус}\label{s7.2-conjecture-ux433ux438ux43fux43eux442ux435ux442ux438ux447ux435ux441ux43aux438ux439-ux441ux442ux430ux442ux443ux441}
+
+Гипотетическая теорема --- направление, в котором (S7.1) может быть превращено в строгое неравенство:
+
+\begin{equation}k_B T \cdot \Delta G^{\text{epist}}[\pi]\bigr|_{\Delta t} \stackrel{\text{conj.}}{\ge} -k_B T \ln 2 \cdot \Delta I_{\text{pred}}\bigr|_{\Delta t}, \tag{S7.2}\end{equation}
+
+где пометка «conj.» отмечает гипотетический статус. Формальная доказательность (S7.2) --- открытая задача, требующая аккуратной работы с временными производными и нестационарной generative model в расширенном active inference framework (Parr et al.~2022).
+
+\emph{Sophisticated inference как направление формализации.} Sophisticated inference (Friston et al.~2021) расширяет стандартный active inference на политики, учитывающие пост-наблюдательные обновления будущих априорных распределений; это естественная рамка для аккуратной работы с временными производными в нестационарной generative model. Доказательство (S7.2) в sophisticated inference framework --- естественный следующий шаг расширения настоящей работы.
+
+\subsection{\texorpdfstring{S7.3 Категориальная оговорка \(I_q(s'; o') \ne I(X_t; X_{t+\tau})\)}{S7.3 Категориальная оговорка I\_q(s\textquotesingle; o\textquotesingle) \textbackslash ne I(X\_t; X\_\{t+\textbackslash tau\})}}\label{s7.3-ux43aux430ux442ux435ux433ux43eux440ux438ux430ux43bux44cux43dux430ux44f-ux43eux433ux43eux432ux43eux440ux43aux430-i_qs-o-ne-ix_t-x_ttau}
+
+Эпистемическая ценность в (Friston2017) --- взаимная информация \(I_q(s'; o'\mid\pi)\) между скрытым состоянием \(s'\) и наблюдением \(o'\), тогда как \(I_{\text{pred}}(t,\tau)\) по (4) main --- MI между двумя последовательными наблюдениями \(X_t\) и \(X_{t+\tau}\). Это категориально различные объекты: первое --- MI в одной точке времени между латентом и наблюдением, второе --- MI между двумя моментами времени по наблюдаемой траектории.
+
+\emph{Мост через достаточность \(\hat P(t)\).} При интерпретации \(s' = \theta(t+\tau)\), \(o' = X_{t+\tau}\) и условии \(X_{t+\tau} \perp \theta(t) \mid \hat P(t)\) (статистическая достаточность \(\hat P(t)\) относительно \(X_{t+\tau}\)) по chain rule MI получается
+
+\[I_{\text{pred}}(t,\tau) \le I_q(\theta(t+\tau); X_{t+\tau} \mid \hat P(t)).\]
+
+Минимизация эпистемической части \(G[\pi]\) при бюджете \(N_{\text{max}}(t)\) \emph{эвристически соответствует} локальной максимизации \(\eta_L(t)\) (в смысле heuristic correspondence § S7.1; строгое следствие не доказано --- мост даёт верхнюю границу на \(I_{\text{pred}}\), не равенство). Прагматическая компонента через предпочтение \(C\) --- \emph{вне} термодинамической шкалы; полная эквивалентность \(\eta_L\) и \(G\) требовала бы кодирования предпочтение через минимизацию \(\dot{E}_{\text{actual}}\) --- нетривиальное расширение FEP.
+
+Условие соответствия --- \(M_{\le t}\) включает \(q(s)\) и историю наблюдений (расширение generative model на episodic уровень через иерархическую/мотивированную active inference (Pezzulo et al.~2018; Parr et al.~2022, гл. 7--8), где высшие уровни иерархии удерживают медленно дрейфующий контекст; parametric predictive coding (Bogacz 2017) не вводит отдельного эпизодического слоя).
+
+\subsection{S7.4 Pearl/Friston-blanket демаркация и нестационарный режим}\label{s7.4-pearlfriston-blanket-ux434ux435ux43cux430ux440ux43aux430ux446ux438ux44f-ux438-ux43dux435ux441ux442ux430ux446ux438ux43eux43dux430ux440ux43dux44bux439-ux440ux435ux436ux438ux43c}
+
+Связь между \(\eta_L\) и принципом свободной энергии Фристона (Friston 2010; Friston et al.~2017a) сформулирована в (Andriishin 2026, § 4.4): требование self-payment превращает FEP в дискриминационный критерий, а \(\eta_L\) операционально закрывает зазор между общим формализмом и требованием принадлежности энергии моделирующему контуру. Опора --- разведение Pearl-blanket (эпистемический инструмент) и Friston-blanket (онтологическое свойство с требованием self-payment) (Bruineberg et al.~2018; Bruineberg et al.~2022).
+
+\emph{В нестационарном режиме} демаркация сохраняется: соответствие \(\eta_L\) и EFE имеет смысл только для Friston-blanket; для систем с экстернализованной платой (LLM-as-agent в стандартной архитектуре) \(\eta_L(t) \to 0\) --- соответствия нет. Это согласуется со структурой § 2.6 main: self-payment как критерий применимости \(\eta_L\) переносится на нестационарный режим и на каждое из трёх слагаемых (1) main.
+
+\emph{Destructive argument Bruineberg.} Аргумент (Bruineberg et al.~2018; Bruineberg et al.~2022) против онтологизации FEP без self-payment-критерия --- структурный аргумент в пользу настоящей рамки: \(\eta_L\) операционализирует требование self-payment и тем самым отвечает на критику Bruineberg в смысле, развёрнутом в (Andriishin 2026, § 4.4a).
+
+\subsection{S7.5 Andrews (2021) / Williams (2020) cross-ref на paper \#1}\label{s7.5-andrews-2021-williams-2020-cross-ref-ux43dux430-paper-1}
+
+Парирование возражений Andrews (2021) (FEP как пустая тавтология при отсутствии независимых критериев) и Williams (2020) (FEP как корректная, но неинформативная характеристика любой неравновесной системы) развёрнуто в (Andriishin 2026, § S4.4a); в настоящей работе оно не повторяется, но структурное соответствие сохраняется: нестационарный \(\eta_L(t)\) закрывает тот же зазор, что и стационарный \(\eta_L\) --- требование принадлежности диссипативного потока моделирующему контуру через self-payment. Категория соответствия --- \emph{функциональное} (общая структура «оптимизация predictive information под бюджетом»), не онтологическое (полное тождество EFE и \(\eta_L\) как объектов).
+
+\subsection{\texorpdfstring{S7.6 Метрика информационного омоложения \(\rho(t)\): подробно}{S7.6 Метрика информационного омоложения \textbackslash rho(t): подробно}}\label{s7.6-ux43cux435ux442ux440ux438ux43aux430-ux438ux43dux444ux43eux440ux43cux430ux446ux438ux43eux43dux43dux43eux433ux43e-ux43eux43cux43eux43bux43eux436ux435ux43dux438ux44f-rhot-ux43fux43eux434ux440ux43eux431ux43dux43e}
+
+Метрика информационного омоложения --- отношение темпов обновления и роста памяти:
+
+\[\rho(t) = \frac{\dot{M}_{\text{refresh}}(t)}{\dot{M}_{\text{grow}}(t)}.\]
+
+\emph{Интерпретация полюсов.} \(\rho \gg 1\) --- обновление обгоняет рост ёмкости: refresh-фракция доминирует, ностальгия \(\nu\) остаётся низкой (адаптивный режим § 5.3 main). \(\rho \ll 1\) --- рост ёмкости обгоняет обновление: архивный слой \(M_{\lt t}\) накапливается быстрее, чем успевает обновляться актуальный слой, и ностальгия монотонно растёт (режим ностальгического коллапса).
+
+\emph{Эпистемический статус \(\rho\).} (13) main --- диагностика, независимая от прямого измерения \(\nu(t)\): \(\dot{M}_{\text{refresh}}\) и \(\dot{M}_{\text{grow}}\) измеримы операционально в системах, где прямая оценка \(\nu(t)\) через (7) main недоступна. У бактерии \(\dot M_{\text{refresh}}\) --- частота CheB-опосредованного деметилирования рецепторов; \(\dot M_{\text{grow}}\) --- частота репликации с добавлением новых копий рецепторов. У LLM-corp \(\dot M_{\text{refresh}}\) --- частота continual pre-training или RAG-обновления индекса; \(\dot M_{\text{grow}}\) --- частота расширения корпоративного корпуса.
+
+\emph{Эмпирическая калибровка.} Численные пороги \(\rho_c\) --- отдельное исследование. В первом приближении \(\rho \sim 1\) соответствует балансовому условию (11b) main; точное соотношение \(\rho_c(\lambda, \sigma, K, \tau_{1/2})\) зависит от той же параметрической структуры, что и \(\nu_c^{\text{theor}}\) (S5.3 supplementary), и наследует её открытый статус.
+
+\emph{Эпистемо-прагматическая декомпозиция (опционально).} В терминах active inference \(\rho(t)\) можно интерпретировать как баланс эпистемического импульса (увеличение эпистемической ценности через \(\dot{M}_{\text{refresh}}\)) и прагматической инвестиции (расширение горизонта политики через \(\dot{M}_{\text{grow}}\)). Эта декомпозиция --- естественное следствие соответствия S7.1; её формальная разработка требует sophisticated inference framework S7.2.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{\texorpdfstring{S8. Адиабатическая асимптотика \(L_{\text{excess}}\) как открытая гипотеза}{S8. Адиабатическая асимптотика L\_\{\textbackslash text\{excess\}\} как открытая гипотеза}}\label{s8.-ux430ux434ux438ux430ux431ux430ux442ux438ux447ux435ux441ux43aux430ux44f-ux430ux441ux438ux43cux43fux442ux43eux442ux438ux43aux430-l_textexcess-ux43aux430ux43a-ux43eux442ux43aux440ux44bux442ux430ux44f-ux433ux438ux43fux43eux442ux435ux437ux430}
+
+Раздел содержит полную развёртку открытой гипотезы об адиабатической асимптотике кумулятивной excess-loss, на которую main § 8.1, § 8.5 ссылаются как на главную открытую количественную задачу работы. Структура: S8.1 --- постановка гипотезы и теоретическая мотивация; S8.2 --- условия применимости и разделение двух адиабатических режимов; S8.3 --- параметрический скан и численная поддержка.
+
+Конверсия единиц для \(L_{\text{excess}}\) (наты ↔ биты) --- Приложение A main: \(L_{\text{excess}}\) измеряется в \textbf{натах} (как в оригинальной BNT-литературе (Bialek et al.~2001, § VI) и MDL-формулировке); явная конверсия \(L_{\text{excess}}^{\text{[бит]}}(t) = L_{\text{excess}}^{\text{[нат]}}(t)/\ln 2\) применяется при сравнении с основным текстом.
+
+\subsection{S8.1 Постановка гипотезы и теоретическая мотивация}\label{s8.1-ux43fux43eux441ux442ux430ux43dux43eux432ux43aux430-ux433ux438ux43fux43eux442ux435ux437ux44b-ux438-ux442ux435ux43eux440ux435ux442ux438ux447ux435ux441ux43aux430ux44f-ux43cux43eux442ux438ux432ux430ux446ux438ux44f}
+
+Альтернативная теоретическая характеристика накопления информации обучающейся системой о латентном параметре среды --- кумулятивная excess-loss обучателя относительно оракула:
+
+\begin{equation}L_{\text{excess}}(t) := \sum_{s \le t} \bigl[ \ln p\bigl(X_s \mid X_{s-1},\, \theta(s)\bigr) - \ln \hat p\bigl(X_s \mid X_{s-1},\, \hat\theta(s)\bigr) \bigr]. \tag{S8.1}\end{equation}
+
+Здесь \(\theta(s)\) --- истинное значение латентного параметра среды на шаге \(s\), \(\hat\theta(s)\) --- оценка обучателя по истории наблюдений; \(L_{\text{excess}}(t)\) измеряется в натах. Операциональный статус (S8.1): эта величина непосредственно вычислима в симуляциях с известной ground truth \(\theta(s)\), но в реальных системах (биосфера, LLM-corp, бактерия) латентный параметр \(\theta(s)\) принципиально недоступен --- \(L_{\text{excess}}\) остаётся контрфактической, теоретически родственной операционально измеримой одношаговой \(I_{\text{pred}}(t,\tau)\) (4) main, но не эквивалентной ей.
+
+Связь с (4) main и термодинамикой памяти. \(L_{\text{excess}}(t)\) --- кумулятивный Bayesian regret обучателя относительно оракула в смысле (Rissanen 1986; Clarke and Barron 1990); для регулярных параметрических моделей он асимптотически связан с \(I(M_{\le t}; \theta(t))\) через теорему о достаточной статистике в смысле (Cover and Thomas 2006, гл. 2.9). Различие: \(L_{\text{excess}}\) --- \emph{интегральная} информация о латенте, накопленная к моменту \(t\); (4) main --- \emph{плотность} информационного потока через текущий шаг, ограниченная \(\ln k\).
+
+\textbf{Гипотеза S8.1 (адиабатическая асимптотика).} \emph{В адиабатическом OU-пределе \(\sigma^2/\lambda \ll 1\) при идеальном байесовском обучении кумулятивная excess-loss \(L_{\text{excess}}(t)\) (S8.1) растёт как \((K/2)\ln(\lambda t)\) --- Class II асимптотика (Bialek et al.~2001, § VI):}
+
+\begin{equation}L_{\text{excess}}^{\text{Bialek}}(t) \sim \frac{K}{2} \ln(\lambda t), \tag{S8.2}\end{equation}
+
+\emph{где \(K = k(k-1)\) --- размерность логитов. Если эту вторичную метрику принять за нестационарный аналог predictive information и определить через неё \(\eta_L^{\text{excess}}(t) := L_{\text{excess}}(t)/N_{\text{max}}(t)\), то в ведущем порядке при \(t \to \infty\) в адиабатическом OU-пределе \(\sigma^2/\lambda \ll 1\) при идеальном байесовском обучателе и линейном росте знаменателя \(N_{\text{max}}(t) \sim Rt\):}
+
+\begin{equation}\dot{\eta}_L^{\text{excess}}(t) \sim -\frac{K \ln(\lambda t)}{2 R t^2}. \tag{S8.3}\end{equation}
+
+\textbf{Статус гипотезы.} (S8.2) --- известная Class II асимптотика BNT (Bialek et al.~2001) для регулярных параметрических моделей; коэффициент \(K/2\) возникает в нескольких парадигмах статистической теории обучения для регулярных параметрических моделей размерности \(K\): MDL (Rissanen 1986; Gr''unwald 2007) и BIC (Schwarz 1978) через Laplace approximation на posterior; PAC-Bayes (McAllester 1999; Catoni 2007) для гауссова prior; online Newton-step regret (Cesa-Bianchi and Lugosi 2006; Hazan et al.~2007) для exp-concave loss (формальный класс, к которому применима логарифмическая граница (Hazan et al.~2007); self-concordant --- более узкое свойство, не использованное в Hazan et al.~2007). (S8.3) --- её прямое алгебраическое следствие в предположении линейного роста знаменателя. Гипотетический статус относится к двум аспектам: (i) сходимости коэффициента в фите \(L_{\text{excess}}\) к \(K/2\) в реализуемых параметризациях OU при конечном \(\sigma\); (ii) применимости результата к операционально измеримой эффективности \(\eta_L(t)\) (10) main, а не к вторичной \(\eta_L^{\text{excess}}\).
+
+\subsection{S8.2 Условия применимости и разделение двух адиабатических режимов}\label{s8.2-ux443ux441ux43bux43eux432ux438ux44f-ux43fux440ux438ux43cux435ux43dux438ux43cux43eux441ux442ux438-ux438-ux440ux430ux437ux434ux435ux43bux435ux43dux438ux435-ux434ux432ux443ux445-ux430ux434ux438ux430ux431ux430ux442ux438ux447ux435ux441ux43aux438ux445-ux440ux435ux436ux438ux43cux43eux432}
+
+Гипотеза S8.1 требует \emph{одновременного} выполнения двух условий (см. § 5.2 main):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Slow-driving} \(\lambda \tau_{\text{relax}} \ll 1\) --- необходимо для применимости Леммы 2 § 4.4 main и квазистационарной интерпретации \(\theta(t)\).
+\item
+  \textbf{OU-concentration} \(\sigma^2/\lambda \ll 1\) --- необходимо именно для (S8.2), не для (4) main: концентрация апостериора по \(\theta(t)\) должна обгонять собственный дрейф \(\theta(t)\).
+\end{enumerate}
+
+Дополнительно: (iii) ограниченно растущая память \(|M_{\le t}| = o(t/\ln t)\) (для линейности знаменателя \(N_{\max} \sim Rt\)); (iv) OU-параметризация именно логитов (softmax-форма обеспечивает регулярность параметрической модели); (v) идеальный байесовский обучатель (плата за обновление --- в \(\dot E_{\text{actual}}^{\text{curr}}\), не в ностальгическом слое).
+
+\subsection{S8.3 Параметрический скан и численная поддержка гипотезы}\label{s8.3-ux43fux430ux440ux430ux43cux435ux442ux440ux438ux447ux435ux441ux43aux438ux439-ux441ux43aux430ux43d-ux438-ux447ux438ux441ux43bux435ux43dux43dux430ux44f-ux43fux43eux434ux434ux435ux440ux436ux43aux430-ux433ux438ux43fux43eux442ux435ux437ux44b}
+
+Численное исследование (S8.2) --- параметрический скан OU-симуляции по \(\sigma^2/\lambda\) с прямым измерением (S8.1). Реализация --- \texttt{simulations/markov\_drift\_ou\_iinf\_adiab/}.
+
+\textbf{Модель.} OU-параметризация § 5.2 / § 6.2 main без изменений (\(k = 8\), \(\lambda = 10^{-3}\), \(K = 56\), Эйлер---Маруяма \(\Delta t = 1\)); идеальный байесовский обучатель аппроксимирован Robbins---Monro \(\eta_t = c/\sqrt t\), \(c = 3\). Измеряется \(L_{\text{excess}}(t)\) по (S8.1) напрямую --- не ограничена \(\ln k\), асимптотически растёт как (S8.2).
+
+\textbf{Параметрический скан.} Три значения \(\sigma\) при фиксированном \(\lambda = 10^{-3}\): \(\sigma \in \{0{,}01,\, 0{,}003,\, 0{,}001\}\), дающие \(\sigma^2/\lambda \in \{0{,}1,\, 9 \cdot 10^{-3},\, 10^{-3}\}\) соответственно. Transient-окно \(1/\sigma^2 \in \{10^4,\, 1{,}1\cdot 10^5,\, 10^6\}\); время симуляции \(T \in \{5\cdot 10^4,\, 5\cdot 10^4,\, 2\cdot 10^5\}\) в пределах transient-окна для всех случаев. Каждая точка --- среднее по 25 независимым реализациям OU-процесса; зерно \texttt{SEED\ =\ 20260524}. Совместная подгонка \(L_{\text{excess}}(t) = A \cdot t + B \cdot \ln(\lambda t) + C\) на окне \(t \in [10^3, 10^4]\) (фиксированном для прямого сопоставления между \(\sigma\)).
+
+\textbf{Результаты.} \emph{Рис. 6: \(B\) против \(\sigma^2/\lambda\)} 
+
+\begin{center}\includegraphics[width=0.85\linewidth]{figs/Fig6.pdf}\end{center}
+
+ \emph{Рис. 7: семейство \(L_{\text{excess}}(t)\) для трёх \(\sigma\)} 
+
+\begin{center}\includegraphics[width=0.85\linewidth]{figs/Fig7.pdf}\end{center}
+
+
+
+\begin{center}\small
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.1667\linewidth} >{\raggedright\arraybackslash}p{0.1667\linewidth} >{\raggedright\arraybackslash}p{0.1667\linewidth} >{\raggedright\arraybackslash}p{0.1667\linewidth} >{\raggedright\arraybackslash}p{0.1667\linewidth} >{\raggedright\arraybackslash}p{0.1667\linewidth}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+\(\sigma\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\sigma^2/\lambda\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(B\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(B/(K/2)\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(R^2\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+drift-share при \(t=10^4\)
+\end{minipage} \\
+\midrule
+0,01 & \(10^{-1}\) & 15,15 & 0,54 & 0,9998 & 76\% \\
+0,003 & \(9\cdot 10^{-3}\) & 21,85 & 0,78 & 0,9996 & 27\% \\
+0,001 & \(10^{-3}\) & 23,84 & 0,85 & 0,9995 & 10\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Коэффициент \(B\) монотонно растёт при \(\sigma^2/\lambda \to 0\), давая \(B/(K/2) = 0{,}54,\, 0{,}78,\, 0{,}85\) соответственно; \(R^2 \ge 0{,}9995\) во всех точках, drift-share \(A \cdot t / L_{\text{excess}}(t)\) падает с 76\% до 10\%.
+
+\textbf{Отрицательный контроль с расширенным окном.} При расширении окна совместной подгонки до \([10^3, T_{\text{total}}]\) (вместо фиксированного \([10^3, 10^4]\)) фит вырождается: при \(\sigma^2/\lambda = 10^{-3}\) и \(T_{\text{total}} = 2\cdot 10^5\) коэффициент \(B/(K/2)\) растёт до 2,0 --- артефакт Robbins---Monro 1\(/\sqrt t\)-bias обучателя на длинных горизонтах, не часть BNT-эффекта. Окно \([10^3, 10^4]\) выбрано для прямого сопоставления между точками адиабатической серии и согласовано с transient-условием \(t \ll 1/\sigma^2\). Этот контроль фиксирует чувствительность результата к выбору окна фита и предотвращает интерпретацию монотонного тренда \(B/(K/2)\) как результата выборочного предъявления.
+
+\textbf{Интерпретация.} Функциональная форма \(L_{\text{excess}}(t) = A\cdot t + B\ln(\lambda t) + C\) извлекается с \(R^2 \ge 0{,}9995\); коэффициент \(B\) монотонно растёт от 0,54 до 0,85 \(\cdot K/2\) при \(\sigma^2/\lambda\) от \(10^{-1}\) до \(10^{-3}\). \textbf{Это не доказательство сходимости \(B \to K/2\)}; асимптотический предел \(B_\infty\) остаётся открытым вопросом. Pre-registered протокол для подтверждения гипотезы (S8.2) требует минимум 5--6 точек скана с явной аналитической формой finite-σ correction \(B(\epsilon) = (K/2)(1 - g(\epsilon))\).
+
+Перенос (S8.2) и (S8.3) в статус открытой гипотезы отражает текущее состояние теоретического обоснования, не финальный приговор: численная поддержка функциональной формы и монотонная сходимость к \(K/2\) --- нетривиальная эмпирическая регулярность, заслуживающая дальнейшего аналитического исследования (см. § 8.5 main).
+
+\textbf{Воспроизводимость.} Полная реализация --- \texttt{simulations/markov\_drift\_ou\_iinf\_adiab/} (\texttt{model.py}, \texttt{main.py}, \texttt{README.md}); графики в \texttt{paper/figs/Fig6.pdf} и \texttt{paper/figs/Fig7.pdf}; сводный лог --- \texttt{simulations/markov\_drift\_ou\_iinf\_adiab/results\_summary.\{txt,json\}} и \texttt{run.log}. Зерно \texttt{SEED\ =\ 20260524}; запуск \texttt{python\ main.py} (\textasciitilde1 минута на современном ноутбуке) восстанавливает все численные значения.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{S9. Детали §§ 2.1 и 2.3 main: three-faces-сопоставление и majority-vote-деривация}\label{s9.-ux434ux435ux442ux430ux43bux438-2.1-ux438-2.3-main-three-faces-ux441ux43eux43fux43eux441ux442ux430ux432ux43bux435ux43dux438ux435-ux438-majority-vote-ux434ux435ux440ux438ux432ux430ux446ux438ux44f}
+
+Раздел собирает плотный стат-механический аппарат, вынесенный из §§ 2.1, 2.3 main для разгрузки основного изложения. S9.1 --- полное сопоставление декомпозиции (1) main с three-faces / Hatano--Sasa классификацией entropy production; S9.2 --- полный вывод majority-vote-варианта Леммы 1 (формула (2') main).
+
+\subsection{S9.1 Сопоставление декомпозиции (1) main с three-faces / Hatano--Sasa}\label{s9.1-ux441ux43eux43fux43eux441ux442ux430ux432ux43bux435ux43dux438ux435-ux434ux435ux43aux43eux43cux43fux43eux437ux438ux446ux438ux438-1-main-ux441-three-faces-hatanosasa}
+
+Декомпозиция (1) main \emph{тематически параллельна} three-faces-разложению entropy production (Esposito and Van den Broeck 2010) и Hatano--Sasa-декомпозиции (Hatano and Sasa 2001), но не сводится к ней автоматически. В канонической трактовке housekeeping-компонента поддерживает фиксированный NESS при стационарных управляющих параметрах, excess-компонента --- изменение NESS под медленным изменением параметров. Соответствие компонент (1) main:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\dot{E}_{\text{store}}\) для удержания конкретного информационного состояния против релаксации к симметричному равновесию относится к \emph{excess}-классу (relaxation-driven), а не к housekeeping: поддерживается не фиксированный NESS, а конкретное неравновесное информационное состояние, релаксирующее к симметричному равновесию.
+\item
+  \(\dot{E}_{\text{actual}}^{\text{curr}}\) при перенастройке \(\hat P(t)\) под дрейф среды также относится к excess-классу (изменение целевого состояния под медленным дрейфом параметров).
+\item
+  refresh-операции Леммы 1 --- серия неравновесных протоколов поверх этого, не сводимая ни к чисто housekeeping, ни к чисто excess.
+\item
+  \(\dot{E}_{\text{grow}}\) --- структурная перестройка (constraint-driven), выходящая за рамки канонической трёхчастной декомпозиции: добавление новых степеней свободы меняет само пространство состояний, а не только распределение на нём.
+\end{itemize}
+
+Точное вложение нестационарной информационной декомпозиции в three-faces-аппарат --- открытая задача (§ 8.5 main).
+
+\subsection{S9.2 Полный вывод majority-vote-варианта Леммы 1 (формула (2') main)}\label{s9.2-ux43fux43eux43bux43dux44bux439-ux432ux44bux432ux43eux434-majority-vote-ux432ux430ux440ux438ux430ux43dux442ux430-ux43bux435ux43cux43cux44b-1-ux444ux43eux440ux43cux443ux43bux430-2-main}
+
+В пределе \(\varepsilon \to 0\) полиномиальная граница (2) main \(\sim 1/\varepsilon\) заменяется majority-vote-вариантом через избыточное кодирование. Для \(n\) копий бита с независимыми ошибками \(\varepsilon < 1/2\) majority-vote ошибается, лишь когда не менее \(n/2\) копий перевёрнуты; вероятность этого хвоста биномиала \(\mathrm{Bin}(n,\varepsilon)\) ограничивается границей Чернова
+
+\[\varepsilon^{\text{eff}} \;=\; \Pr\!\left[\mathrm{Bin}(n,\varepsilon) \ge n/2\right] \;\le\; \exp\!\bigl(-n\, D(\tfrac{1}{2}\,\|\,\varepsilon)\bigr), \qquad D(\tfrac{1}{2}\,\|\,\varepsilon) = \tfrac{1}{2}\ln\frac{1}{4\varepsilon(1-\varepsilon)},\]
+
+где \(D(\tfrac{1}{2}\,\|\,\varepsilon)\) --- KL-дивергенция Бернулли \(\mathrm{Ber}(1/2)\) от \(\mathrm{Ber}(\varepsilon)\). Здесь \(\varepsilon\) в \(D(\tfrac{1}{2}\,\|\,\varepsilon)\) --- \emph{сырая покопийная ошибка} (вероятность переворота на одну копию бита, физический параметр носителя), тогда как \(\varepsilon^{\text{eff}}\) --- \emph{целевая} (достигаемая) эффективная ошибка декодированного бита после majority-vote; именно различие этих двух величин и обеспечивает экспоненциальное подавление \(\varepsilon^{\text{eff}} \le e^{-n D(\frac{1}{2}\|\varepsilon)}\) при фиксированном \(\varepsilon < 1/2\). Отсюда для достижения целевой эффективной ошибки \(\varepsilon^{\text{eff}}\) достаточно
+
+\[n \;\sim\; \frac{\ln(1/\varepsilon^{\text{eff}})}{D(\tfrac{1}{2}\,\|\,\varepsilon)}\]
+
+копий --- \emph{логарифмическое} по \(1/\varepsilon^{\text{eff}}\) число копий (а не линейное по 1\(/\varepsilon\), как в naive refresh). Каждая из \(n\) копий деградирует независимо с тем же \(\tau_{1/2}\), поэтому темп refresh для majority-vote сохраняет фактор \(t/\tau_{1/2}\) (число refresh-циклов), но плата на цикл --- логарифмическая по 1\(/\varepsilon\), а не полиномиальная:
+
+\begin{equation}E_{\text{store}}^{(1),\text{maj}}(t) \;\ge\; C \cdot \frac{t}{\tau_{1/2}} \cdot k_B T \ln(1/\varepsilon), \qquad C = O(1), \tag{2'}\end{equation}
+
+с константой \(C\), зависящей от схемы majority-vote (Sagawa--Ueda расширение Sagawa and Ueda 2009; Parrondo et al.~2015). Структурно (2) main и (2') совпадают по линейному росту с \(t/\tau_{1/2}\) --- числу refresh-циклов; различие --- по зависимости от \(\varepsilon\): полиномиальная в naive / логарифмическая в majority-vote. Класс систем-камертонов, к которым применима исходная (2) main: ферромагнитные домены тёплых сред и системы с naive refresh; для биологических систем с feedback-репарацией используется (2') с логарифмической зависимостью от \(\varepsilon\). Feedback-assisted refresh (DNA mismatch repair) дополнительно смягчает границу по Sagawa--Ueda \(\langle W \rangle \ge k_B T (\Delta S - I_{\text{meas}})\) (Sagawa and Ueda 2009): обнуляется \emph{структурированный} бит с условной энтропией \(H(\varepsilon) = -\varepsilon\ln\varepsilon - (1-\varepsilon)\ln(1-\varepsilon) \ll \ln 2\) при \(\varepsilon \ll 1\), и в пределе идеального измерения цена refresh уходит к нулю --- асимптотика автономных демонов Максвелла (Koski et al.~2014; Mandal and Jarzynski 2012; Barato and Seifert 2014; Bauer et al.~2014).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+
+\nocite{*}
+\bibliography{refs}
+
+\end{document}

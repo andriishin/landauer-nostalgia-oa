@@ -1,0 +1,45 @@
+{
+  "k": 8,
+  "K_params": 56,
+  "lambda": 0.001,
+  "sigma": 0.1,
+  "T_total": 20000,
+  "n_runs": 50,
+  "tau_pred": 1,
+  "theta0_std": 0.1,
+  "R": 1.0,
+  "tau_half": 100.0,
+  "learn_c": 3.0,
+  "transient_window_upper": 99.99999999999999,
+  "fit_window": [
+    1000.0,
+    15000.0
+  ],
+  "slope_theory_K_over_2R": 28.0,
+  "fit_eta_t_vs_log_lam_t_NmaxRt": {
+    "ok": true,
+    "slope": -0.08938312621387373,
+    "intercept": 0.3767993545966836,
+    "R2": 0.8879892010187614,
+    "n_points": 71,
+    "t_min": 1000.0,
+    "t_max": 15000.0,
+    "K_eff_assuming_R1": -0.17876625242774746
+  },
+  "fit_eta_t_vs_log_lam_t_Nmaxfull": {
+    "ok": true,
+    "slope": -0.07592517699783372,
+    "intercept": 0.299285646384898,
+    "R2": 0.9059444856449579,
+    "n_points": 71,
+    "t_min": 1000.0,
+    "t_max": 15000.0,
+    "K_eff_assuming_R1": -0.15185035399566743
+  },
+  "late_time": {
+    "nu_mean": 0.8216930541254232,
+    "nu_std": 0.031157233928245775,
+    "eta_L_R_mean": 1.0182603915087716e-05,
+    "eta_L_full_mean": 7.293621857628211e-06
+  }
+}

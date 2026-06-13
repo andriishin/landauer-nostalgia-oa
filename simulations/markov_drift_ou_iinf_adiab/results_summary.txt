@@ -1,0 +1,91 @@
+=== iter-006 Step 2: OU + I_infinity ADIABATIC SCAN ===
+k = 8, K = k(k-1) = 56, K/2 = 28.0
+lambda = 0.001, N_runs = 25, learn_c = 3.0, seed = 20260524
+Total runtime: 44.8s
+
+--- Adiabatic scan summary ---
+  sigma   sig^2/lam      1/sig^2    T_tot   B_comp   B_wide  B/(K/2)_c  B/(K/2)_w  R2_comp  R2_wide
+   0.01   1.000e-01     1.00e+04    50000   15.148   12.729      0.541      0.455   0.9998   0.9996
+  0.003   9.000e-03     1.11e+05    50000   21.851   32.180      0.780      1.149   0.9996   0.9996
+  0.001   1.000e-03     1.00e+06   200000   23.842   56.989      0.851      2.035   0.9995   0.9986
+
+Full fit details:
+
+  sigma = 0.01 (control_iter006_step1_reproduction)
+    sigma^2/lambda = 1.000e-01
+    transient bound 1/sigma^2 = 1.00e+04
+    T_total = 50000, measure_every = 100
+    runtime = 8.1s
+    joint fit [comparison 1000,10000]:
+       A_linear = 1.71679e-02
+       B_log    = 15.148
+       C        = 34.392
+       R^2      = 0.9998, n_pts = 91
+       B/(K/2)  = 0.541
+    joint fit [wide       1000,5000]:
+       A_linear = 1.84322e-02
+       B_log    = 12.729
+       C        = 33.292
+       R^2      = 0.9996, n_pts = 41
+       B/(K/2)  = 0.455
+    log-only fit [comparison]:
+       B_log    = 87.603, R^2 = 0.9472
+    drift-loss ratio A*t / L_excess(t):
+       t=   1000:  ratio = 0.355
+       t=  10000:  ratio = 0.762
+       t=  50000:  ratio = 0.935
+
+  sigma = 0.003 (intermediate)
+    sigma^2/lambda = 9.000e-03
+    transient bound 1/sigma^2 = 1.11e+05
+    T_total = 50000, measure_every = 100
+    runtime = 8.3s
+    joint fit [comparison 1000,10000]:
+       A_linear = 5.61787e-03
+       B_log    = 21.851
+       C        = 41.646
+       R^2      = 0.9996, n_pts = 91
+       B/(K/2)  = 0.780
+    joint fit [wide       1000,50000]:
+       A_linear = 3.89310e-03
+       B_log    = 32.180
+       C        = 35.635
+       R^2      = 0.9996, n_pts = 491
+       B/(K/2)  = 1.149
+    log-only fit [comparison]:
+       B_log    = 45.561, R^2 = 0.9781
+    drift-loss ratio A*t / L_excess(t):
+       t=   1000:  ratio = 0.083
+       t=  10000:  ratio = 0.266
+       t=  50000:  ratio = 0.550
+
+  sigma = 0.001 (adiabatic)
+    sigma^2/lambda = 1.000e-03
+    transient bound 1/sigma^2 = 1.00e+06
+    T_total = 200000, measure_every = 200
+    runtime = 28.4s
+    joint fit [comparison 1000,10000]:
+       A_linear = 4.51364e-03
+       B_log    = 23.842
+       C        = 42.844
+       R^2      = 0.9995, n_pts = 46
+       B/(K/2)  = 0.851
+    joint fit [wide       1000,200000]:
+       A_linear = 1.43054e-03
+       B_log    = 56.989
+       C        = 2.792
+       R^2      = 0.9986, n_pts = 996
+       B/(K/2)  = 2.035
+    log-only fit [comparison]:
+       B_log    = 42.726, R^2 = 0.9833
+    drift-loss ratio A*t / L_excess(t):
+       t=   1000:  ratio = 0.030
+       t=  10000:  ratio = 0.101
+       t=  50000:  ratio = 0.241
+       t= 100000:  ratio = 0.348
+       t= 200000:  ratio = 0.490
+
+--- INTERPRETATION ---
+See README.md for the qualitative conclusion driving the article-level
+decision (does conjecture S8.1 / (S8.2) Supplementary survive as adiabatic-only
+or does it need fallback).
