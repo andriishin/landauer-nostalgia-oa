@@ -1,8 +1,8 @@
-# Markov-drift simulations (§ 6.1 of *The Non-Stationary Landauer Efficiency*)
+# Markov-drift simulations (§ 6.1 of *The Non-Stationary Predictive Efficiency*)
 
-Numerical illustration of the three regimes of $\eta_L(t)$ and the nostalgic
-fraction $\nu(t)$ for the PSP (piecewise-stationary with Poisson switches)
-surrogate of the OU-drift class (§ 5.2).
+Numerical illustration of the three regimes of the predictive information
+$I_{\mathrm{pred}}(t)$ and nostalgia $\nu^{\mathrm{op}}(t)$ for the PSP (piecewise-stationary with Poisson
+switches) surrogate of the OU-drift class (§ 5.2).
 
 ## Model in one paragraph
 
@@ -18,10 +18,12 @@ surrogate of the OU-drift class (§ 5.2).
   $I_{\mathrm{pred}}(t,\tau) = I_{\mathrm{opt}}(P(t),\tau)
    - \mathbb{E}_{X_t\sim\pi(t)} D_{\mathrm{KL}}(P(t)^\tau(\cdot|X_t)\,\|\,\hat P(t)^\tau(\cdot|X_t))$,
   clipped at zero.
-- $\nu(t)=1-I_{\mathrm{pred}}(t,\tau)/I_{\mathrm{opt}}(P(t),\tau)$.
-- Memory size $|M_t|=k^2=64$ structural parameters; we use cost
-  $N_{\max}(t)=R\cdot t$ with $R=1$ (units of $k_B T\ln 2$ per step).
-- $\eta_L(t)=I_{\mathrm{pred}}(t,\tau)/N_{\max}(t)$.
+- **Canonical nostalgia** — prediction shortfall
+  $\nu^{\mathrm{op}}(t)=1-I_{\mathrm{pred}}(t,\tau)/I_{\mathrm{opt}}(P(t),\tau)$ (leading measure; discriminates regimes).
+- **Efficiency**: $\eta = I_{\mathrm{pred}}/I_{\mathrm{mem}}$ with the *information* denominator
+  $I_{\mathrm{mem}}(t)=(K/2)\ln(\max(N_{\mathrm{obs}},e))$, $N_{\mathrm{obs}}=t$ — the Bayesian complexity of a
+  $K$-parameter model over $N_{\mathrm{obs}}$ observations.
+- Structural ballast $\nu^{\mathrm{Still}}=1-\eta$ is secondary (structurally $\approx 1$).
 
 ### Why $\alpha=0.3$ and $\tau=1$?
 
@@ -47,16 +49,15 @@ each. End-to-end runtime on a modern laptop is roughly 5–15 minutes.
 
 ## Outputs
 
-- `../../paper/figs/fig1_eta_three_regimes.png` — $\eta_L(t)$ for the three
-  regimes (stationary; drift, no reset; drift with reset at three $\tau_w$).
-- `../../paper/figs/fig2_eta_avg_vs_tau_w.png` — late-time
-  $\langle\eta_L\rangle$ vs the memory window $\tau_w$ at fixed
-  $\lambda=10^{-3}$.
-- `../../paper/figs/fig3_nu_evolution.png` — $\nu(t)$ for the drift-no-reset
+- `../../paper/figs/fig1_Ipred_three_regimes.png` (+ `Fig1.pdf`) — $I_{\mathrm{pred}}(t)$ for the three
+  regimes (stationary; drift, no reset — collapse; drift with reset at three $\tau_w$).
+- `../../paper/figs/fig2_Ipred_avg_vs_tau_w.png` (+ `Fig2.pdf`) — late-time $\langle I_{\mathrm{pred}}\rangle$
+  vs the memory window $\tau_w$ (dome with an interior optimum) at $\lambda=10^{-3}$.
+- `../../paper/figs/fig3_nu_evolution.png` (+ `Fig3.pdf`) — $\nu^{\mathrm{op}}(t)$ for the drift-no-reset
   and drift-with-reset regimes.
-- `results_summary.txt` and `results_summary.json` — numerical results used
-  in the body of § 6.1 (slope of the $\eta_L\cdot t$ vs $\ln(\lambda t)$
-  fit, $\nu_\infty$, optimal $\tau_w$, stationary plateau).
+- `results_summary.txt` and `results_summary.json` — § 6.1 numbers: $I_{\mathrm{pred}}$, $I_{\mathrm{mem}}$,
+  $\eta$, $\nu^{\mathrm{op}}$, $\nu^{\mathrm{Still}}$ per regime; $I_{\mathrm{pred}}$ collapse by $\sim 940\times$;
+  optimal $\tau_w^\star = 200$ ($\tau_E = 1000$); bound checks.
 
 ## Files
 

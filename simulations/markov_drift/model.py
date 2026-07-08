@@ -1,14 +1,24 @@
 """Core model: piecewise-stationary Markov chain with Poisson regime switches (PSP class).
 
 Implements:
-- Sampling random row-stochastic matrices from Dirichlet(alpha=1).
+- Sampling random row-stochastic matrices from Dirichlet(alpha).
 - Piecewise-constant transition matrix P(t) with Poisson switches at rate lambda.
 - Observer estimate \hat P(t) from sliding window of empirical transition counts
   (with Laplace smoothing).
 - Stationary distribution and predictive information functionals.
 
-All entropies in nats (we convert to bits where labelled). Energetic cost normalized
-so k_B T ln 2 = 1; one bit of stored information costs 1 unit per relaxation interval.
+Re-equipped apparatus (efficiency redefined I_pred/N_max -> I_pred/I_mem):
+  I_mem(t) = (K/2) * ln(max(N_obs(t), e)),  K = k*(k-1),
+             N_obs = number of transitions retained in memory.
+  This is the standard learned (model<->data mutual) information of an MDL/Bayes
+  estimator of a K-parameter model from N observations, I ~ (K/2) ln N nats.
+  It is a data-processing bound on what the model can know about the dynamics,
+  so I_pred <= I_mem always (eta in [0,1]).
+  eta(t)        = I_pred(t) / I_mem(t)                  (Landauer efficiency)
+  nu_Still(t)   = 1 - eta(t)                            (memory ballast = nostalgia)
+  nu_op(t)      = 1 - I_pred(t) / I_opt(t)              (prediction shortfall, secondary)
+
+All entropies/informations in nats.
 """
 
 from __future__ import annotations
@@ -101,6 +111,22 @@ def observer_predictive_info(P_true: np.ndarray, P_hat: np.ndarray, tau: int) ->
     return max(I_opt - kl, 0.0)
 
 
+def memory_information(n_obs: float, k: int) -> float:
+    """Learned information stored by the model: I_mem = (K/2) ln(max(N_obs, e)) nats.
+
+    K = k*(k-1) free off-diagonal parameters of a k-state row-stochastic matrix
+    (each row has k-1 free entries). For a K-parameter model estimated from
+    N independent observations, the mutual information between the fitted model
+    and the data grows as (K/2) ln N (MDL / Bayesian stochastic complexity).
+    The floor at N_obs = e keeps I_mem >= K/2 > 0, so eta = I_pred / I_mem is
+    well defined from the first observation. NOTE: I_pred <= I_mem here is enforced
+    by the finite-sample clip below (a guard on estimator overshoot), NOT a DPI
+    theorem -- there is no general DPI order for the operational numerator (paper 3.1).
+    """
+    K = k * (k - 1)
+    return 0.5 * K * np.log(max(n_obs, np.e))
+
+
 # ---------- Observer memory ----------
 
 class SlidingWindowEstimator:
@@ -142,6 +168,7 @@ class SlidingWindowEstimator:
         return c / c.sum(axis=1, keepdims=True)
 
     def total_observations(self) -> float:
+        """Number of transitions currently retained in memory (window occupancy)."""
         return float(self.counts.sum())
 
 
@@ -156,19 +183,19 @@ def simulate_run(
     rng: np.random.Generator,
     measure_every: int = 50,
     laplace: float = 1.0,
-    R: float = 1.0,
-    N0: float = 0.0,
     alpha: float = 1.0,
 ) -> dict:
     """Run a single simulation.
 
     Returns a dict with arrays sampled every `measure_every` steps:
-      times, I_pred, I_opt, nu, N_max, eta_L,
+      times, I_pred, I_opt, I_mem, eta, nu_still, nu_op, n_obs,
       switch_times (list of T_i within [0, T]).
 
-    Cost model (units of k_B T ln 2 = 1):
-      N_max(t) = N0 + R * t.
-      |M_t| = k^2 structural parameters (bookkeeping; eta_L uses N_max(t)).
+    Re-equipped cost model (all in nats):
+      I_mem(t) = (K/2) ln(max(N_obs(t), e)),  N_obs = transitions in memory.
+      eta(t)      = I_pred(t) / I_mem(t)        (replaces old eta_L = I_pred / N_max).
+      nu_still(t) = 1 - eta(t)                  (memory ballast, canonical nostalgia).
+      nu_op(t)    = 1 - I_pred(t) / I_opt(t)    (prediction shortfall, secondary).
     """
     # initial transition matrix and first switch time
     P_true = sample_stochastic_matrix(k, rng, alpha=alpha)
@@ -188,9 +215,11 @@ def simulate_run(
     times = np.zeros(n_samples)
     I_pred_arr = np.zeros(n_samples)
     I_opt_arr = np.zeros(n_samples)
-    nu_arr = np.zeros(n_samples)
-    N_max_arr = np.zeros(n_samples)
+    I_mem_arr = np.zeros(n_samples)
     eta_arr = np.zeros(n_samples)
+    nu_still_arr = np.zeros(n_samples)
+    nu_op_arr = np.zeros(n_samples)
+    n_obs_arr = np.zeros(n_samples)
 
     sample_idx = 0
     for t in range(1, T + 1):
@@ -210,32 +239,41 @@ def simulate_run(
             P_hat = estimator.estimate()
             I_opt = optimal_predictive_info(P_true, tau_pred)
             I_obs = observer_predictive_info(P_true, P_hat, tau_pred)
-            nu = 1.0 - (I_obs / I_opt) if I_opt > 1e-9 else 0.0
-            N_max = N0 + R * t
-            eta = I_obs / N_max if N_max > 0 else 0.0
+            n_obs = estimator.total_observations()
+            I_mem = memory_information(n_obs, k)
+            # Finite-sample guard: clip estimator overshoot to I_mem (NOT a DPI theorem;
+            # no general DPI order for the operational numerator -- paper 3.1).
+            I_obs = min(I_obs, I_mem)
+            eta = I_obs / I_mem if I_mem > 0 else 0.0
+            nu_still = 1.0 - eta
+            nu_op = 1.0 - (I_obs / I_opt) if I_opt > 1e-9 else 0.0
 
             times[sample_idx] = t
             I_pred_arr[sample_idx] = I_obs
             I_opt_arr[sample_idx] = I_opt
-            nu_arr[sample_idx] = nu
-            N_max_arr[sample_idx] = N_max
+            I_mem_arr[sample_idx] = I_mem
             eta_arr[sample_idx] = eta
+            nu_still_arr[sample_idx] = nu_still
+            nu_op_arr[sample_idx] = nu_op
+            n_obs_arr[sample_idx] = n_obs
             sample_idx += 1
 
     return dict(
         times=times[:sample_idx],
         I_pred=I_pred_arr[:sample_idx],
         I_opt=I_opt_arr[:sample_idx],
-        nu=nu_arr[:sample_idx],
-        N_max=N_max_arr[:sample_idx],
-        eta_L=eta_arr[:sample_idx],
+        I_mem=I_mem_arr[:sample_idx],
+        eta=eta_arr[:sample_idx],
+        nu_still=nu_still_arr[:sample_idx],
+        nu_op=nu_op_arr[:sample_idx],
+        n_obs=n_obs_arr[:sample_idx],
         switch_times=np.array(switch_times, dtype=np.float64),
     )
 
 
 def average_runs(runs: list[dict]) -> dict:
     """Average per-time arrays across runs (assumes identical sampling grid)."""
-    keys = ["I_pred", "I_opt", "nu", "N_max", "eta_L"]
+    keys = ["I_pred", "I_opt", "I_mem", "eta", "nu_still", "nu_op", "n_obs"]
     times = runs[0]["times"]
     out = {"times": times}
     for key in keys:

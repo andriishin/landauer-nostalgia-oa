@@ -1,16 +1,16 @@
-# Нестационарная ландауэровская эффективность — открытые материалы
+# Информационная ностальгия — открытые материалы
 
 *([English version](./README.md))*
 
-Открытые материалы к статье **«The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems»** (русский — основной язык; включён английский перевод).
+Открытые материалы к статье **«Informational Nostalgia: Memory Growth, the Irreducible Prediction Shortfall, and the Thermodynamics of Non-Stationary Learning»** (русский — основной язык; включён английский перевод).
 
-Это продолжение статьи *«Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»* ([andriishin/landauer-self-modeling-oa](https://github.com/andriishin/landauer-self-modeling-oa)), расширяющее ландауэровскую эффективность
+Это продолжение статьи *«Vitality as the Efficiency of Self-Paid Self-Modeling»* ([andriishin/landauer-self-modeling-oa](https://github.com/andriishin/landauer-self-modeling-oa)), расширяющее предсказательную эффективность самомоделирования
 
 ```
-η_L = I_pred / N_max,   N_max = E_actual / (k_B T ln 2)
+η_v = I_pred / I_mem = 1 − ν
 ```
 
-со стационарного режима на **нестационарную** среду с растущей памятью. Система удерживает свою модель против среды, которая дрейфует быстрее, чем модель обновляется, поэтому растущая доля хранимых битов перестаёт что-либо предсказывать — *информационная ностальгия*. Доказаны два результата: **Лемма 1** (удержание бита против термодинамической эрозии требует строго положительной мощности с явной нижней границей) и **Лемма 2** (при медленном дрейфе Орнштейна–Уленбека и любом конечном темпе обновления доля ностальгии асимптотически остаётся выше явной положительной константы). Следствия: эффективность обнуляется выше критической ностальгии и существует оптимальный темп полного сброса памяти.
+со стационарного режима на **нестационарную** среду с растущей памятью. Система удерживает свою модель против среды, которая дрейфует быстрее, чем модель обновляется, поэтому растущая доля хранимых битов перестаёт что-либо предсказывать — *информационная ностальгия*, измеряемая операционально **недобором прогноза** ν^op (долей предсказуемого будущего среды, которую система упускает). Рамка применима при методологическом условии *самооплаты* — каждый удерживаемый бит оплачивается собственной свободной энергией системы, а термодинамическую цену даёт отдельный бонд Still. Доказаны два результата: **Лемма 1** (удержание бита против термодинамической эрозии требует строго положительной мощности с явной нижней границей) и **Лемма 2** (условный результат: при медленном дрейфе Орнштейна–Уленбека, любом конечном темпе обновления и численно проверенном допущении об аддитивности недобор прогноза асимптотически остаётся выше явной положительной константы). Следствия: предсказательная способность коллапсирует выше критической ностальгии и существует оптимальный темп полного сброса памяти.
 
 ## Состав
 
@@ -20,13 +20,13 @@ paper/
   supplementary.md / supplementary.ru.md   Дополнительные материалы — англ. / рус.
   main.tex / main.ru.tex             Исходник LaTeX (шаблон Springer Nature sn-jnl; генерируется из .md)
   supplementary.tex / supplementary.ru.tex
-  main.pdf (48 с.) / main.ru.pdf (50 с.)            Скомпилированная рукопись
-  supplementary.pdf (43 с.) / supplementary.ru.pdf (45 с.)
+  main.pdf (57 с.) / main.ru.pdf (59 с.)            Скомпилированная рукопись
+  supplementary.pdf (54 с.) / supplementary.ru.pdf (57 с.)
   refs.bib                           Библиография
   sn-jnl.cls, sn-*.bst               Шаблон Springer Nature + стили библиографии (third-party; см. LICENSE)
   figs/                              Рисунки (генерируются симуляциями ниже)
 simulations/                         Воспроизводимые численные эксперименты
-  markov_drift/                      PSP-суррогат (§ 6.1): три режима η_L(t)
+  markov_drift/                      PSP-суррогат (§ 6.1): три режима ν^op(t) / η_v(t)
   markov_drift_ou/                   OU-дрейф (§ 6.2): непрерывный дрейф логитов, режим коллапса
   markov_drift_ou_iinf/              OU + кумулятивная BNT-избыточность (логарифмический коэффициент joint-fit)
   markov_drift_ou_iinf_adiab/        Адиабатический скан: коэффициент BNT vs σ²/λ (Supplementary § S8.3)
@@ -66,6 +66,6 @@ cd simulations/markov_drift_ou && pip install -r requirements.txt && python main
 
 Архивные материалы (этот репозиторий):
 
-> Andriishin, A. *The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20653051
+> Andriishin, A. *Informational Nostalgia: Memory Growth, the Irreducible Prediction Shortfall, and the Thermodynamics of Non-Stationary Learning.* Zenodo, 2026. https://doi.org/10.5281/zenodo.20653051
 
 Депозит опубликован на Zenodo с указанным выше DOI. Машиночитаемое описание цитирования — в [`CITATION.cff`](./CITATION.cff). Журнальная версия записи будет добавлена отдельной ссылкой после принятия.

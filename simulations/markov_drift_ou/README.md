@@ -1,4 +1,4 @@
-# OU-drift simulation (§ 6.2 of *The Non-Stationary Landauer Efficiency*)
+# OU-drift simulation (§ 6.2 of *The Non-Stationary Predictive Efficiency*)
 
 Numerical illustration of the collapse regime (Lemma 2, § 5.1) on the canonical OU
 class of § 5.2; complement to the PSP surrogate in `../markov_drift/`, which only
@@ -25,12 +25,11 @@ that is done in `../markov_drift_ou_iinf/` and `../markov_drift_ou_iinf_adiab/`.
   $I_{\mathrm{pred}}(t,\tau) = I_{\mathrm{opt}}(P(t),\tau)
    - \mathbb{E}_{X_t\sim\pi(t)} D_{\mathrm{KL}}(P(t)^\tau \,\|\, \hat P(t)^\tau)$,
   clipped at zero.
-- $\nu(t)=1-I_{\mathrm{pred}}/I_{\mathrm{opt}}$.
-- Two budgets reported:
-  - $N_{\max}^{Rt}(t) = R\cdot t$ (matches theory derivation of (S8.2));
-  - $N_{\max}^{\text{full}}(t) = \sum_s [R + \nu(s)\cdot |M|/\tau_{1/2}]$
-    with $|M|=K=56$, $\tau_{1/2}=100$, $R=1$.
-- $\eta_L(t) = I_{\mathrm{pred}}/N_{\max}(t)$.
+- **Efficiency**: $\eta = I_{\mathrm{pred}}/I_{\mathrm{mem}}$ with the *information* denominator
+  $I_{\mathrm{mem}}(t) = (K/2)\ln(\max(N_{\mathrm{obs}},e))$, $N_{\mathrm{obs}}=t$ — the MDL estimator of growing
+  memory (Bayesian complexity of a $K$-parameter model).
+- **Canonical nostalgia** — prediction shortfall $\nu^{\mathrm{op}}(t) = 1 - I_{\mathrm{pred}}/I_{\mathrm{opt}}$
+  (leading measure; discriminates regimes); structural ballast $\nu^{\mathrm{Still}} = 1 - \eta$ is secondary (structurally $\approx 1$).
 
 ## Why these parameter values
 
@@ -61,26 +60,24 @@ chain steps).
 
 ## Outputs
 
-- `../../paper/figs/fig4_ou_eta_vs_t.png` — $\eta_L(t)$ for OU drift averaged
-  across realisations, with $\pm 1\sigma$ band; both $N_{\max}$ variants.
-- `../../paper/figs/fig5_ou_etat_vs_lnlambdat.png` — $\eta_L\cdot t$ vs
-  $\ln(\lambda t)$ with the empirical linear fit and the theory line
-  $K/(2R) = 28$ for visual slope comparison.
-- `results_summary.txt` and `results_summary.json` — fit slope, $R^2$,
-  $K_{\text{eff}}$, late-time $\nu$, comparison to theoretical $K/(2R)$.
+- `../../paper/figs/fig4_ou_nuop_vs_t.png` (+ `Fig4.pdf`) — **carrier figure**: $\nu^{\mathrm{op}}(t)$ of both
+  learners under drift; Robbins–Monro freezes ($\nu^{\mathrm{op}}$ rises toward 1), the constant step holds at a floor.
+- `../../paper/figs/fig5_ou_optimal_step.png` (+ `Fig5.pdf`) — **design decides**: late-time constant-step
+  $\nu^{\mathrm{op}}$ vs step magnitude at $\sigma=0.1$; interior optimum $s^\star \approx 0.6$.
+- `results_summary.txt` and `results_summary.json` — $I_{\mathrm{opt}}$, $I_{\mathrm{mem}}$, late-time
+  $I_{\mathrm{pred}}$, $\eta$, $\nu^{\mathrm{op}}$ for both learners; sweeps over $\sigma$ and step magnitude; bound checks.
 - `run.log` — full progress log of the simulation run.
 
 ## Result
 
-The fitted slope of $\eta_L\cdot t$ vs $\ln(\lambda t)$ with $N_{\max}=R\,t$ is
-**$-0.089$** against the theoretical $K/(2R)=28$ (ratio $-0.003$; both sign and
-magnitude wrong), $R^2\approx 0.89$; $\nu\approx 0.82$ at late times — see
-`results_summary.txt`. This is **expected**: the point $\sigma=0.1$ lies outside the
-OU-concentration regime in which S8.1 is stated, so the absence of the BNT logarithm
-here does **not** refute the conjecture — it only confirms that, away from the
-adiabatic limit, $\eta_L(t)$ stays in the collapse regime (Lemma 2). The test of the
-S8.1 asymptotic itself is carried out in `../markov_drift_ou_iinf_adiab/`, where the
-slope approaches $K/2$ as $\sigma^2/\lambda \to 0$.
+Robbins–Monro **freezes** under drift: $\nu^{\mathrm{op}}$ rises $0.567 \to 0.892$ ($t = 2200 \to 20000$),
+$\langle\nu^{\mathrm{op}}\rangle = 0.820$, $\eta \approx 5\cdot10^{-4}$. The constant step $s=0.3$ **tracks**:
+$\nu^{\mathrm{op}}$ holds at $\approx 0.33$, $\langle\nu^{\mathrm{op}}\rangle = 0.316$. The step-magnitude sweep
+gives an **interior optimum** $s^\star \approx 0.6$ ($\langle\nu^{\mathrm{op}}\rangle = 0.290$), comfortably
+beating the frozen Robbins–Monro (0.820) — "forget at the pace of drift". Bounds: $\eta \in [0, 0.008]$,
+$\nu^{\mathrm{op}} \in [0, 1]$, zero $I_{\mathrm{pred}} > I_{\mathrm{opt}}$ violations over 50000 points (see
+`results_summary.txt`). The S8.1 adiabatic asymptotic is not tested at this point ($\sigma^2/\lambda=10$) —
+it is checked in `../markov_drift_ou_iinf_adiab/`.
 
 ## Files
 

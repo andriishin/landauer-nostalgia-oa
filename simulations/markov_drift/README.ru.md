@@ -1,7 +1,7 @@
-# Симуляции марковского дрейфа (§ 6.1 статьи *Нестационарная ландауэровская эффективность*)
+# Симуляции марковского дрейфа (§ 6.1 статьи *Нестационарная предсказательная эффективность*)
 
-Численная иллюстрация трёх режимов $\eta_L(t)$ и ностальгической доли $\nu(t)$
-для PSP-суррогата (piecewise-stationary с пуассоновскими переключениями)
+Численная иллюстрация трёх режимов предсказательной информации $I_{\mathrm{pred}}(t)$ и ностальгии
+$\nu^{\mathrm{op}}(t)$ для PSP-суррогата (piecewise-stationary с пуассоновскими переключениями)
 как аппроксимации OU-дрейфового класса (§ 5.2).
 
 ## Модель в одном абзаце
@@ -18,10 +18,12 @@
   $I_{\mathrm{pred}}(t,\tau) = I_{\mathrm{opt}}(P(t),\tau)
    - \mathbb{E}_{X_t\sim\pi(t)} D_{\mathrm{KL}}(P(t)^\tau(\cdot|X_t)\,\|\,\hat P(t)^\tau(\cdot|X_t))$,
   с обрезкой по нулю.
-- $\nu(t)=1-I_{\mathrm{pred}}(t,\tau)/I_{\mathrm{opt}}(P(t),\tau)$.
-- Размер памяти $|M_t|=k^2=64$ структурных параметров; используем стоимость
-  $N_{\max}(t)=R\cdot t$ при $R=1$ (в единицах $k_B T\ln 2$ на шаг).
-- $\eta_L(t)=I_{\mathrm{pred}}(t,\tau)/N_{\max}(t)$.
+- **Каноническая ностальгия** — недобор прогноза
+  $\nu^{\mathrm{op}}(t)=1-I_{\mathrm{pred}}(t,\tau)/I_{\mathrm{opt}}(P(t),\tau)$ (ведущая мера, различает режимы).
+- **Эффективность**: $\eta = I_{\mathrm{pred}}/I_{\mathrm{mem}}$ с *информационным* знаменателем
+  $I_{\mathrm{mem}}(t)=(K/2)\ln(\max(N_{\mathrm{obs}},e))$, $N_{\mathrm{obs}}=t$ — байесовская сложность
+  $K$-параметрической модели по $N_{\mathrm{obs}}$ наблюдениям.
+- Структурный балласт $\nu^{\mathrm{Still}}=1-\eta$ — вторичный (структурно $\approx 1$).
 
 ### Почему $\alpha=0.3$ и $\tau=1$?
 
@@ -47,16 +49,15 @@ python main.py
 
 ## Вывод
 
-- `../../paper/figs/fig1_eta_three_regimes.png` — $\eta_L(t)$ для трёх режимов
-  (стационарный; дрейф без сброса; дрейф со сбросом при трёх $\tau_w$).
-- `../../paper/figs/fig2_eta_avg_vs_tau_w.png` — позднее
-  $\langle\eta_L\rangle$ как функция окна памяти $\tau_w$ при фиксированном
-  $\lambda=10^{-3}$.
-- `../../paper/figs/fig3_nu_evolution.png` — $\nu(t)$ для режимов дрейфа без
+- `../../paper/figs/fig1_Ipred_three_regimes.png` (+ `Fig1.pdf`) — $I_{\mathrm{pred}}(t)$ для трёх режимов
+  (стационарный; дрейф без сброса — коллапс; дрейф со сбросом при трёх $\tau_w$).
+- `../../paper/figs/fig2_Ipred_avg_vs_tau_w.png` (+ `Fig2.pdf`) — позднее $\langle I_{\mathrm{pred}}\rangle$
+  как функция окна памяти $\tau_w$ (купол с внутренним оптимумом) при $\lambda=10^{-3}$.
+- `../../paper/figs/fig3_nu_evolution.png` (+ `Fig3.pdf`) — $\nu^{\mathrm{op}}(t)$ для режимов дрейфа без
   сброса и дрейфа со сбросом.
-- `results_summary.txt` и `results_summary.json` — численные результаты,
-  используемые в основном тексте § 6.1 (наклон подгонки $\eta_L\cdot t$ vs
-  $\ln(\lambda t)$, $\nu_\infty$, оптимальное $\tau_w$, стационарное плато).
+- `results_summary.txt` и `results_summary.json` — числа § 6.1: $I_{\mathrm{pred}}$, $I_{\mathrm{mem}}$, $\eta$,
+  $\nu^{\mathrm{op}}$, $\nu^{\mathrm{Still}}$ по режимам; коллапс $I_{\mathrm{pred}}$ в $\sim 940$ раз; оптимальное
+  $\tau_w^\star = 200$ ($\tau_E = 1000$); проверки границ.
 
 ## Файлы
 

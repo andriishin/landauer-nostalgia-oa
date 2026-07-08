@@ -1,25 +1,52 @@
-=== OU-drift simulation results (§ 6.2) ===
+=== OU-drift simulation results (§ 6.2): TWO learners ===
+Apparatus: eta = I_pred / I_mem,  I_mem = (K/2) ln(max(N_obs, e)), N_obs = t
+  nu_op = 1 - I_pred/I_opt (CANONICAL nostalgia),  nu_Still = 1 - eta (secondary)
+  rm   = Robbins-Monro decaying step c/sqrt(t)  -> FREEZES under drift
+  const= constant step s (validated optimal at sigma=0.1) -> TRACKS to a floor
 k = 8, K = k(k-1) = 56, tau_pred = 1
 lambda = 0.001, sigma = 0.1, T = 20000, n_runs = 50
-theta0_std = 0.1, learn_c = 3.0
+theta0_std = 0.1, learn_c = 3.0, const_step = 0.3, seed = 20260524
 OU stationary variance sigma^2/(2 lambda) = 5.000e+00
-Transient window upper bound 1/sigma^2 ~ 1.00e+02
 
---- Fit eta_L*t vs ln(lam t), N_max = R*t, window [1000,15000] ---
-  slope = -0.089
-  intercept = 0.377
-  R^2 = 0.888
-  n_points = 71
-  theory K/(2R) = 28.0
-  K_eff (R=1) = -0.18
-  ratio empirical/theory = -0.003
+--- Central working point, late-time means (last 50%, +- SEM across runs) ---
+  shared:   <I_opt> = 0.7567+-0.0046   <I_mem> = 268.6835+-0.0000   <N_obs> = 15000
+  Robbins-Monro (decaying step c/sqrt(t)):
+    <I_pred>  = 0.1459 +- 0.0043 nats
+    <eta>     = 0.0005 +- 0.0000
+    <nu_op>   = 0.8205 +- 0.0047  (CANONICAL; HIGH = frozen)
+    <theta_err> = 15.3677 +- 0.0601
+  constant step s = 0.3:
+    <I_pred>  = 0.5287 +- 0.0050 nats
+    <eta>     = 0.0020 +- 0.0000
+    <nu_op>   = 0.3157 +- 0.0031  (CANONICAL; LOW = tracking floor)
+    <theta_err> = 11.9937 +- 0.0539
 
---- Fit with full N_max budget ---
-  slope = -0.076
-  R^2 = 0.906
-  ratio empirical/theory = -0.003
+--- RM freezing vs const tracking (nu_op early / mid / late) ---
+  t=2200: RM=0.567  const=0.283
+  t=10200: RM=0.747  const=0.305
+  t=20000: RM=0.892  const=0.331
+  => RM nu_op rises 0.567 -> 0.892 (FREEZING); const stays ~0.331 (floor)
 
-Late-time (t > 10000):
-  nu = 0.822 +- 0.031
-  <eta_L>_R    = 1.018e-05
-  <eta_L>_full = 7.294e-06
+--- Bound checks over ALL sampled points (both learners) ---
+  total sampled points: 50000
+  eta in [0,1]:    range [0.0000, 0.0081]  (I_pred>I_mem violations: 0)
+  nu_op in [0,1]:  range [0.0098, 1.0000]  (I_pred>I_opt violations: 0)
+
+--- sigma sweep (drift strength), late-time <nu_op> ---
+  (RM stays flat-high ~ frozen; const responds to drift)
+  sigma= 0.03: RM <nu_op>=0.858   const <nu_op>=0.670
+  sigma= 0.06: RM <nu_op>=0.835   const <nu_op>=0.371
+  sigma=  0.1: RM <nu_op>=0.822   const <nu_op>=0.322
+  sigma=  0.2: RM <nu_op>=0.851   const <nu_op>=0.339
+  sigma=  0.4: RM <nu_op>=0.855   const <nu_op>=0.376
+
+--- constant-step magnitude sweep at sigma=0.1 (Fig 5: interior optimum) ---
+  step= 0.02: const <nu_op>=0.861+-0.005
+  step= 0.05: const <nu_op>=0.686+-0.004
+  step=  0.1: const <nu_op>=0.516+-0.005
+  step=  0.2: const <nu_op>=0.378+-0.004
+  step=  0.3: const <nu_op>=0.329+-0.003
+  step=  0.4: const <nu_op>=0.302+-0.004
+  step=  0.6: const <nu_op>=0.290+-0.004  <-- optimum
+  step=  1.0: const <nu_op>=0.339+-0.005
+  optimal step ~ 0.6 (<nu_op>=0.290) vs frozen RM <nu_op>=0.820

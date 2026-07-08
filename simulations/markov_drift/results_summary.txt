@@ -1,24 +1,68 @@
 === Markov-drift simulation results (§ 6.1) ===
-k = 8, K = k(k-1) = 56, tau_pred = 1
-Stationary eta_L late-time plateau: 6.055e-05
+Re-equipped apparatus: eta = I_pred / I_mem,  I_mem = (K/2) ln(max(N_obs, e))
+  nu_Still = 1 - eta (memory ballast),  nu_op = 1 - I_pred/I_opt (secondary)
+k = 8, K = k(k-1) = 56, tau_pred = 1, alpha = 0.3, lambda = 0.001, tau_E = 1000
+All quantities are late-time means over the last 40% of each run (+- SEM across runs).
 
-Drift, no reset (lambda=1e-3, tau_w=inf, T=1e5, 60 runs):
-  fit eta_L*t vs ln(lam t) on t in [2000,50000]:
-    slope = -0.057
-    R^2 = 0.802
-    theory K/(2R) = 28.0
-    K_eff (R=1) = -0.11
-  nu_inf (late-time t>60k): 0.999 +- 0.001
-  nu at eta_L peak: 0.339
-  nu at eta_L halflife (empirical nu_c proxy): 0.445
+Stationary (lam=0, tau_w=inf, T=1e4, 80 runs):
+    <  I_pred> = 0.6583 +- 0.0122
+    <   I_mem> = 251.3366 +- 0.0000
+    <     eta> = 0.0026 +- 0.0000
+    <nu_Still> = 0.9974 +- 0.0000
+    <   nu_op> = 0.0061 +- 0.0002
+    <   N_obs> = 8000.0000 +- 0.0000
 
-Tau_w sweep (lambda=1e-3, T=5e4, 40 runs):
-  tau_w=    50: <eta_L>_late = 8.494e-06 +- 1.346e-07
-  tau_w=   100: <eta_L>_late = 1.154e-05 +- 1.204e-07
-  tau_w=   200: <eta_L>_late = 1.300e-05 +- 1.665e-07
-  tau_w=   500: <eta_L>_late = 1.283e-05 +- 1.521e-07
-  tau_w=  1000: <eta_L>_late = 1.077e-05 +- 2.534e-07
-  tau_w=  2000: <eta_L>_late = 6.963e-06 +- 2.111e-07
-  tau_w=  5000: <eta_L>_late = 2.731e-06 +- 1.829e-07
-  tau_w= 10000: <eta_L>_late = 1.269e-06 +- 1.211e-07
-  optimal tau_w in grid: 200
+Drift, no reset (lam=1e-3, tau_w=inf, T=1e5, 60 runs):
+    <  I_pred> = 0.0007 +- 0.0002
+    <   I_mem> = 315.8136 +- 0.0000
+    <     eta> = 0.0000 +- 0.0000
+    <nu_Still> = 1.0000 +- 0.0000
+    <   nu_op> = 0.9991 +- 0.0002
+    <   N_obs> = 80000.0000 +- 0.0000
+
+Drift + reset tau_w=100 (T=1e5, 60 runs):
+    <  I_pred> = 0.4122 +- 0.0030
+    <   I_mem> = 128.9448 +- 0.0000
+    <     eta> = 0.0032 +- 0.0000
+    <nu_Still> = 0.9968 +- 0.0000
+    <   nu_op> = 0.3821 +- 0.0016
+    <   N_obs> = 100.0000 +- 0.0000
+
+Drift + reset tau_w=500 (T=1e5, 60 runs):
+    <  I_pred> = 0.4658 +- 0.0036
+    <   I_mem> = 174.0090 +- 0.0000
+    <     eta> = 0.0027 +- 0.0000
+    <nu_Still> = 0.9973 +- 0.0000
+    <   nu_op> = 0.2975 +- 0.0038
+    <   N_obs> = 500.0000 +- 0.0000
+
+Drift + reset tau_w=2000 (T=1e5, 60 runs):
+    <  I_pred> = 0.2706 +- 0.0051
+    <   I_mem> = 212.8253 +- 0.0000
+    <     eta> = 0.0013 +- 0.0000
+    <nu_Still> = 0.9987 +- 0.0000
+    <   nu_op> = 0.6003 +- 0.0074
+    <   N_obs> = 2000.0000 +- 0.0000
+
+I_pred collapse (drift-no-reset / stationary): 0.0011
+  (drift 0.0007 nats vs stationary 0.6583 nats)
+
+eta in [0,1] check over all 136000 sampled points: range [0.0000, 0.0063]
+DPI violations (I_pred > I_mem): 0
+
+Tau_w sweep (lam=1e-3, T=5e4, 40 runs):
+  tau_w=    50: <I_pred>=3.068e-01+-4.9e-03  <eta>=2.801e-03+-4.5e-05
+  tau_w=   100: <I_pred>=4.150e-01+-4.2e-03  <eta>=3.218e-03+-3.3e-05
+  tau_w=   200: <I_pred>=4.674e-01+-5.8e-03  <eta>=3.151e-03+-3.9e-05
+  tau_w=   500: <I_pred>=4.633e-01+-5.1e-03  <eta>=2.662e-03+-3.0e-05
+  tau_w=  1000: <I_pred>=3.879e-01+-9.1e-03  <eta>=2.005e-03+-4.7e-05
+  tau_w=  2000: <I_pred>=2.499e-01+-7.1e-03  <eta>=1.174e-03+-3.3e-05
+  tau_w=  5000: <I_pred>=9.807e-02+-6.7e-03  <eta>=4.112e-04+-2.8e-05
+  tau_w= 10000: <I_pred>=4.378e-02+-3.6e-03  <eta>=1.697e-04+-1.4e-05
+  optimal tau_w by <I_pred>: 200 (tau_E = 1000)
+  optimal tau_w by <eta>:    100
+
+Lemma 2 (memory-ballast floor):
+  eta* = max_tau_w <eta> = 0.0032
+  c = 1 - eta* = 0.9968
+  drift-no-reset <nu_Still> = 1.0000 >= 1 - c = 0.9968 ? True

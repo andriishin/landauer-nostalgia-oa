@@ -216,6 +216,9 @@ def simulate_run_iinf(
             P_hat_post = estimator.estimate_P()
             I_obs_step = observer_predictive_info(P_true, P_hat_post, tau=1)
             nu = 1.0 - (I_obs_step / I_opt_step) if I_opt_step > 1e-9 else 0.0
+            # NmaxR / eta_R_* below: RETRACTED N_max=budget apparatus (old eta_L=I_pred/N_max),
+            # kept only as an iter-006 archival diagnostic in this uncited dir; it is NOT the
+            # current eta_v=I_pred/I_mem apparatus (see ../markov_drift_ou/). Do not surface in claims.
             NmaxR = N0 + R * t
             theta_err = float(np.linalg.norm(theta - estimator.estimate_theta()))
 

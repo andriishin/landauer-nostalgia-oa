@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use these materials, please cite the archived Zenodo deposit."
-title: "The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems"
-abstract: "Open-access materials accompanying the article «The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems»: manuscript (Russian primary, English translation), supplementary material, bibliography, figures, and self-contained reproducible numerical experiments (Markov chains with drift and a controlled continual-learning tuning-fork). Companion to «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality»."
+title: "Informational Nostalgia: Memory Growth, the Irreducible Prediction Shortfall, and the Thermodynamics of Non-Stationary Learning"
+abstract: "Open-access materials accompanying the article «Informational Nostalgia: Memory Growth, the Irreducible Prediction Shortfall, and the Thermodynamics of Non-Stationary Learning»: manuscript (Russian primary, English translation), supplementary material, bibliography, figures, and self-contained reproducible numerical experiments (Markov chains with drift and a controlled continual-learning surrogate). Companion to «Vitality as the Efficiency of Self-Paid Self-Modeling»."
 type: software
 authors:
   - family-names: Andriishin
@@ -17,14 +17,16 @@ repository-code: "https://github.com/andriishin/landauer-nostalgia-oa"
 license:
   - CC-BY-4.0
   - MIT
-date-released: "2026-06-18"
-version: "1.0.0"
+date-released: "2026-07-08"
+version: "2.0.0"
 keywords:
   - Landauer principle
   - predictive information
   - stochastic thermodynamics
   - non-stationary environment
   - informational nostalgia
+  - prediction shortfall
+  - self-payment
   - memory
   - Ornstein-Uhlenbeck drift
   - continual learning

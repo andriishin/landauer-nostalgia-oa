@@ -1,5 +1,10 @@
 # iter-006 Step 1: OU + I_infinity (BNT redundancy) — critical experiment
 
+> **Status: historical BNT-slope diagnostic, not part of the submission.** This directory is not cited by the
+> paper (only `../markov_drift_ou_iinf_adiab/` is). Its primary test is the cumulative excess-loss `L_excess`
+> against the `K/2` slope. The paper's current apparatus is `η = I_pred/I_mem`, `I_mem = (K/2) ln N_obs`
+> (see `../markov_drift_ou/`).
+
 Companion to `../markov_drift_ou/` (iter-005). That simulation showed that the
 asymptotic of conjecture S8.1 / (S8.2) Supplementary *fails* with the one-step MI definition of
 `I_pred`: the empirical slope was -0.089 vs theoretical 28 (ratio -0.003, both
